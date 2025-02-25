@@ -41,7 +41,7 @@ public class AuthorServiceImpl implements AuthorService {
     }
 
     @Override
-    public List<GetAuthorResponse> read() {
+    public List<GetAuthorResponse> readAuthors() {
         List<Author> authors = authorRepository.findAll();
 
         return authors.stream()

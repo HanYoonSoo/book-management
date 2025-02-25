@@ -38,8 +38,8 @@ public class AuthorControllerImpl implements AuthorController {
 
     @Override
     @GetMapping("/authors")
-    public ApiResponse<List<GetAuthorResponse>> read() {
-        List<GetAuthorResponse> response = authorService.read();
+    public ApiResponse<List<GetAuthorResponse>> readAuthors() {
+        List<GetAuthorResponse> response = authorService.readAuthors();
 
         return ApiResponse.ok(response);
     }

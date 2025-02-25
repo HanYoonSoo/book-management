@@ -50,5 +50,5 @@ public interface AuthorController {
     @io.swagger.v3.oas.annotations.responses.ApiResponse(
             responseCode = "200", description = "Author 목록 조회 성공"
     )
-    ApiResponse<List<GetAuthorResponse>> read();
+    ApiResponse<List<GetAuthorResponse>> readAuthors();
 }

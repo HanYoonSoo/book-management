@@ -12,5 +12,5 @@ public interface AuthorService {
 
     void update(UpdateAuthorRequest request, Long authorId);
 
-    List<GetAuthorResponse> read();
+    List<GetAuthorResponse> readAuthors();
 }
