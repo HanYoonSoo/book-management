@@ -37,4 +37,12 @@ public class Author extends BaseTimeEntity {
                 .email(email)
                 .build();
     }
+
+    public void modifyName(String name) {
+        this.name = name;
+    }
+
+    public void modifyEmail(String email) {
+        this.email = email;
+    }
 }
