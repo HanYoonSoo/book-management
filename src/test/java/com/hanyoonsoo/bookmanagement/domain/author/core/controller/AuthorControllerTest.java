@@ -14,8 +14,7 @@ import org.springframework.test.web.servlet.MockMvc;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.doNothing;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.patch;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
@@ -69,6 +68,30 @@ class AuthorControllerTest {
         mockMvc.perform(patch("/authors/1")
                 .contentType("application/json")
                 .content(requestBody))
+                .andDo(print())
+                .andExpect(status().isOk());
+    }
+
+    @Test
+    @DisplayName("저자 목록 조회에 성공하면 200 상태코드를 전달 받는다.")
+    void readAuthors_whenSuccess_thenReturnStatus200() throws Exception {
+        doNothing()
+                .when(authorService)
+                .readAuthors();
+
+        mockMvc.perform(get("/authors"))
+                .andDo(print())
+                .andExpect(status().isOk());
+    }
+
+    @Test
+    @DisplayName("저자 상세 조회에 성공하면 200 상태코드를 전달 받는다.")
+    void readAuthorDetail_whenSuccess_thenReturnStatus200() throws Exception {
+        doNothing()
+                .when(authorService)
+                .readAuthorDetail(any());
+
+        mockMvc.perform(get("/authors/1"))
                 .andDo(print())
                 .andExpect(status().isOk());
     }
