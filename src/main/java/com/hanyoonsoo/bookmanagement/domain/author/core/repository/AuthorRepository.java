@@ -7,4 +7,6 @@ public interface AuthorRepository {
     void save(Author author);
 
     boolean existsByEmail(String email);
+
+    Author findByIdOrElseThrow(Long authorId);
 }
