@@ -30,4 +30,11 @@ public class Author extends BaseTimeEntity {
 
     @Column(name = "deleted_at")
     private LocalDateTime deletedAt;
+
+    public static Author of(String name, String email) {
+        return Author.builder()
+                .name(name)
+                .email(email)
+                .build();
+    }
 }
