@@ -46,4 +46,15 @@ class AuthorRepositoryTest {
         assertThrows(DataIntegrityViolationException.class,
                 () -> authorJpaRepository.save(Author.of("홍길동", "test-fail@example.com")));
     }
+
+    @Test
+    @DisplayName("저자가 있다면, 저자를 찾는데 성공한다.")
+    void whenExistsAuthor_thenFindSuccess() throws Exception {
+        //given
+        Author author = Author.of("홍길동", "test@example.com");
+        authorJpaRepository.save(author);
+
+        //when & then
+        assertDoesNotThrow(() -> authorJpaRepository.findById(author.getId()));
+    }
 }
