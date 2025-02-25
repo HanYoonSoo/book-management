@@ -8,6 +8,8 @@ import com.hanyoonsoo.bookmanagement.global.common.enums.ErrorCode;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
 
+import java.util.List;
+
 @Repository
 @RequiredArgsConstructor
 public class AuthorRepositoryImpl implements AuthorRepository {
@@ -28,6 +30,11 @@ public class AuthorRepositoryImpl implements AuthorRepository {
     public Author findByIdOrElseThrow(Long authorId) {
         return authorJpaRepository.findById(authorId)
                 .orElseThrow(() -> new AuthorException(ErrorCode.NOT_FOUND, "Not Found Author"));
+    }
+
+    @Override
+    public List<Author> findAll() {
+        return authorJpaRepository.findAll();
     }
 
 }
