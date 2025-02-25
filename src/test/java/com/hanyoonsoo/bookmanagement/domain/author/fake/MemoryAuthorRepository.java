@@ -5,20 +5,18 @@ import com.hanyoonsoo.bookmanagement.domain.author.core.exception.AuthorExceptio
 import com.hanyoonsoo.bookmanagement.domain.author.core.repository.AuthorRepository;
 import com.hanyoonsoo.bookmanagement.global.common.enums.ErrorCode;
 
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Optional;
+import java.util.*;
 import java.util.concurrent.atomic.AtomicLong;
 
 public class MemoryAuthorRepository implements AuthorRepository {
 
     private final Map<Long, Author> authors = new HashMap<>();
-    public static final AtomicLong authorId = new AtomicLong(1);
+    public Long authorId = 1L;
 
 
     @Override
     public void save(Author author) {
-        authors.put(authorId.getAndAdd(1), author);
+        authors.put(authorId++, author);
     }
 
     @Override
@@ -32,4 +30,13 @@ public class MemoryAuthorRepository implements AuthorRepository {
         return Optional.ofNullable(authors.get(authorId))
                 .orElseThrow(() -> new AuthorException(ErrorCode.NOT_FOUND, "Not Found Author"));
     }
+
+    @Override
+    public List<Author> findAll() {
+        return authors.keySet().stream()
+                .sorted()
+                .map(authors::get)
+                .toList();
+    }
+
 }
