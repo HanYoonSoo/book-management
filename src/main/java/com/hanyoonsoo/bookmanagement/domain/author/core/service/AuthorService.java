@@ -13,4 +13,6 @@ public interface AuthorService {
     void update(UpdateAuthorRequest request, Long authorId);
 
     List<GetAuthorResponse> readAuthors();
+
+    GetAuthorResponse readAuthorDetail(Long authorId);
 }

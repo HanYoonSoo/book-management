@@ -49,6 +49,13 @@ public class AuthorServiceImpl implements AuthorService {
                 .toList();
     }
 
+    @Override
+    public GetAuthorResponse readAuthorDetail(Long authorId) {
+        Author author = validateExistsAuthor(authorId);
+
+        return GetAuthorResponse.from(author);
+    }
+
     private void validateDuplicatedEmail(String email) {
         boolean exists = authorRepository.existsByEmail(email);
 
