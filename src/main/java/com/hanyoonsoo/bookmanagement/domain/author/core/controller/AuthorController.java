@@ -2,9 +2,12 @@ package com.hanyoonsoo.bookmanagement.domain.author.core.controller;
 
 import com.hanyoonsoo.bookmanagement.domain.author.core.dto.request.CreateAuthorRequest;
 import com.hanyoonsoo.bookmanagement.domain.author.core.dto.request.UpdateAuthorRequest;
+import com.hanyoonsoo.bookmanagement.domain.author.core.dto.response.GetAuthorResponse;
 import com.hanyoonsoo.bookmanagement.global.common.dto.ApiResponse;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
+
+import java.util.List;
 
 @Tag(name = "Author", description = "<b>[Author]</b> API")
 public interface AuthorController {
@@ -30,7 +33,7 @@ public interface AuthorController {
                     "이미 존재하는 이메일일 경우 수정에 실패하고 409 에러를 반환합니다."
     )
     @io.swagger.v3.oas.annotations.responses.ApiResponse(
-            responseCode = "201", description = "Author 수정 성공"
+            responseCode = "200", description = "Author 수정 성공"
     )
     @io.swagger.v3.oas.annotations.responses.ApiResponse(
             responseCode = "404", description = "존재하지 않는 Author Id로 접근 시 수정 실패"
@@ -39,4 +42,13 @@ public interface AuthorController {
             responseCode = "409", description = "이미 존재하는 이메일로 인해 Author 수정 실패"
     )
     ApiResponse<Void> update(UpdateAuthorRequest request, Long authorId);
+
+    @Operation(
+            summary = "Author 목록 조회",
+            description = "Author 목록 조회 API, 모든 저자 목록을 반환합니다. "
+    )
+    @io.swagger.v3.oas.annotations.responses.ApiResponse(
+            responseCode = "200", description = "Author 목록 조회 성공"
+    )
+    ApiResponse<List<GetAuthorResponse>> read();
 }

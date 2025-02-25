@@ -3,11 +3,14 @@ package com.hanyoonsoo.bookmanagement.domain.author.core.controller.impl;
 import com.hanyoonsoo.bookmanagement.domain.author.core.controller.AuthorController;
 import com.hanyoonsoo.bookmanagement.domain.author.core.dto.request.CreateAuthorRequest;
 import com.hanyoonsoo.bookmanagement.domain.author.core.dto.request.UpdateAuthorRequest;
+import com.hanyoonsoo.bookmanagement.domain.author.core.dto.response.GetAuthorResponse;
 import com.hanyoonsoo.bookmanagement.domain.author.core.service.AuthorService;
 import com.hanyoonsoo.bookmanagement.global.common.dto.ApiResponse;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @RestController
 @RequiredArgsConstructor
@@ -31,6 +34,14 @@ public class AuthorControllerImpl implements AuthorController {
         authorService.update(request, authorId);
 
         return ApiResponse.ok(null);
+    }
+
+    @Override
+    @GetMapping("/authors")
+    public ApiResponse<List<GetAuthorResponse>> read() {
+        List<GetAuthorResponse> response = authorService.read();
+
+        return ApiResponse.ok(response);
     }
 
 }
