@@ -44,4 +44,12 @@ public class AuthorControllerImpl implements AuthorController {
         return ApiResponse.ok(response);
     }
 
+    @Override
+    @GetMapping("/authors/{authorId}")
+    public ApiResponse<GetAuthorResponse> readAuthorDetail(@PathVariable Long authorId) {
+        GetAuthorResponse response = authorService.readAuthorDetail(authorId);
+
+        return ApiResponse.ok(response);
+    }
+
 }
