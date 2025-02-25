@@ -17,13 +17,13 @@ public class AuthorServiceImpl implements AuthorService {
 
     @Override
     public void create(CreateAuthorRequest request) {
-        validateExistsEmail(request.getEmail());
+        validateDuplicatedEmail(request.getEmail());
 
         Author author = Author.of(request.getName(), request.getEmail());
         authorRepository.save(author);
     }
 
-    private void validateExistsEmail(String email) {
+    private void validateDuplicatedEmail(String email) {
         boolean exists = authorRepository.existsByEmail(email);
 
         if(exists) throw new AuthorException(ErrorCode.NOT_VALID, "Already Exists Email");
