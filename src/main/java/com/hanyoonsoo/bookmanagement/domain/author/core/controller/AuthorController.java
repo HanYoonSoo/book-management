@@ -6,6 +6,8 @@ import com.hanyoonsoo.bookmanagement.domain.author.core.dto.response.GetAuthorRe
 import com.hanyoonsoo.bookmanagement.global.common.dto.ApiResponse;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 
 import java.util.List;
 
@@ -51,4 +53,14 @@ public interface AuthorController {
             responseCode = "200", description = "Author 목록 조회 성공"
     )
     ApiResponse<List<GetAuthorResponse>> readAuthors();
+
+    @Operation(
+            summary = "Author 상세 정보 조회",
+            description = "Author 상세 정보 조회 API, 저자의 상세 정보를 반환합니다. "
+    )
+    @io.swagger.v3.oas.annotations.responses.ApiResponse(
+            responseCode = "200", description = "Author 상세 정보 조회 성공"
+    )
+    ApiResponse<GetAuthorResponse> readAuthorDetail(Long authorId);
+
 }
