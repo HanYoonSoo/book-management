@@ -27,6 +27,7 @@ public class CreateBookRequest {
      * - 책 식별 번호: 7 ~ 9자리
      * - 체크 디지트: 마지막 자리 (항상 0)
      */
+    @NotBlank
     @Pattern(
             regexp = "^(1[0-9]|[2-8][0-9]|90)[0-9]{3,4}[0-9]{1,3}0$"
     )
