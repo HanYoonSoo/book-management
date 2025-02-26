@@ -56,13 +56,14 @@ public class AuthorServiceImpl implements AuthorService {
         return GetAuthorResponse.from(author);
     }
 
+    @Override
+    public Author validateExistsAuthor(Long authorId) {
+        return authorRepository.findByIdOrElseThrow(authorId);
+    }
+
     private void validateDuplicatedEmail(String email) {
         boolean exists = authorRepository.existsByEmail(email);
 
         if(exists) throw new AuthorException(ErrorCode.DUPLICATED, "Already Exists Email");
-    }
-
-    private Author validateExistsAuthor(Long authorId) {
-        return authorRepository.findByIdOrElseThrow(authorId);
     }
 }
