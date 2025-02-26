@@ -61,6 +61,14 @@ public class BookServiceImpl implements BookService {
         if(publicationDate != null) book.modifyPublicationDate(publicationDate);
     }
 
+    @Override
+    @Transactional
+    public void delete(Long bookId) {
+        Book book = validateExistsBook(bookId);
+
+        bookRepository.delete(book);
+    }
+
     private Book validateExistsBook(Long bookId) {
         return bookRepository.findByIdOrElseThrow(bookId);
     }

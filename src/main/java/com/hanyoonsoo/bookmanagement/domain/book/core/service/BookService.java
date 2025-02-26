@@ -8,4 +8,6 @@ public interface BookService {
     void create(CreateBookRequest request);
 
     void update(UpdateBookRequest request, Long bookId);
+
+    void delete(Long bookId);
 }
