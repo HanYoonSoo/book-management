@@ -1,6 +1,7 @@
 package com.hanyoonsoo.bookmanagement.domain.book.core.dto.request;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
+import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Pattern;
@@ -15,8 +16,10 @@ import java.time.LocalDate;
 public class CreateBookRequest {
 
     @NotBlank
+    @Schema(description = "도서 제목", example = "도서 타이틀")
     private String title;
 
+    @Schema(description = "도서 설명", example = "도서에 대한 설명", nullable = true)
     private String description;
 
     /**
@@ -31,12 +34,14 @@ public class CreateBookRequest {
     @Pattern(
             regexp = "^(1[0-9]|[2-8][0-9]|90)[0-9]{3,4}[0-9]{1,3}0$"
     )
+    @Schema(description = "국제 표준 도서번호", example = "1234567890")
     private String isbn;
 
-    @NotNull
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd")
+    @Schema(description = "도서 출판일", example = "2025-02-26", nullable = true)
     private LocalDate publication_date;
 
     @NotNull
+    @Schema(description = "도서 저자", example = "1")
     private Long authorId;
 }
