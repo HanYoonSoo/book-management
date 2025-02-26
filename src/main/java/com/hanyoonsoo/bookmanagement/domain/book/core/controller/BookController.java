@@ -1,6 +1,7 @@
 package com.hanyoonsoo.bookmanagement.domain.book.core.controller;
 
 import com.hanyoonsoo.bookmanagement.domain.book.core.dto.request.CreateBookRequest;
+import com.hanyoonsoo.bookmanagement.domain.book.core.dto.request.UpdateBookRequest;
 import com.hanyoonsoo.bookmanagement.global.common.dto.ApiResponse;
 import io.swagger.v3.oas.annotations.Operation;
 
@@ -22,4 +23,6 @@ public interface BookController {
             responseCode = "409", description = "이미 존재하는 isbn으로 인해 Book 생성 실패"
     )
     ApiResponse<Void> create(CreateBookRequest request);
+
+    ApiResponse<Void> update(UpdateBookRequest request, Long bookId);
 }
