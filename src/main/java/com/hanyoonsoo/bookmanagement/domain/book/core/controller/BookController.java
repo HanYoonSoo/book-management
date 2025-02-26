@@ -40,4 +40,6 @@ public interface BookController {
             responseCode = "409", description = "이미 존재하는 isbn으로 인해 Book 수정 실패"
     )
     ApiResponse<Void> update(UpdateBookRequest request, Long bookId);
+
+    ApiResponse<Void> delete(Long bookId);
 }

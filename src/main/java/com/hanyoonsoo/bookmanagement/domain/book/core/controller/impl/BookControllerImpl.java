@@ -32,4 +32,12 @@ public class BookControllerImpl implements BookController {
 
         return ApiResponse.ok(null);
     }
+
+    @Override
+    @DeleteMapping("/books/{bookId}")
+    public ApiResponse<Void> delete(@PathVariable("bookId") Long bookId) {
+        bookService.delete(bookId);
+
+        return ApiResponse.ok(null);
+    }
 }
