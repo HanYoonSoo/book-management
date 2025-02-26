@@ -46,7 +46,7 @@ class BookServiceTest {
         CreateBookRequest request = CreateBookRequest.builder()
                 .title("테스트 타이틀")
                 .description("테스트 설명")
-                .publication_date(LocalDate.now())
+                .publicationDate(LocalDate.now())
                 .isbn("1234567890")
                 .authorId(1L)
                 .build();
@@ -62,7 +62,7 @@ class BookServiceTest {
         CreateBookRequest request = CreateBookRequest.builder()
                 .title("테스트 타이틀")
                 .description("테스트 설명")
-                .publication_date(LocalDate.now())
+                .publicationDate(LocalDate.now())
                 .isbn("1234567890")
                 .authorId(1L)
                 .build();
@@ -90,7 +90,7 @@ class BookServiceTest {
         CreateBookRequest request = CreateBookRequest.builder()
                 .title("테스트 타이틀")
                 .description("테스트 설명")
-                .publication_date(LocalDate.now())
+                .publicationDate(LocalDate.now())
                 .isbn("1234567890")
                 .authorId(1L)
                 .build();
