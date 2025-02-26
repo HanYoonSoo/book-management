@@ -7,4 +7,6 @@ public interface BookRepository {
     void save(Book book);
 
     boolean existsByIsbn(String isbn);
+
+    Book findByIdOrElseThrow(Long bookId);
 }
