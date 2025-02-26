@@ -59,4 +59,19 @@ public class Book extends BaseTimeEntity {
                 .build();
     }
 
+    public void modifyTitle(String title) {
+        this.title = title;
+    }
+
+    public void modifyIsbn(String isbn) {
+        this.isbn = isbn;
+    }
+
+    public void modifyDescription(String description) {
+        this.description = description;
+    }
+
+    public void modifyPublicationDate(LocalDate publicationDate) {
+        this.publicationDate = publicationDate;
+    }
 }
