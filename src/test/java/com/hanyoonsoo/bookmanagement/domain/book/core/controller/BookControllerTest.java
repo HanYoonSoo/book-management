@@ -16,8 +16,7 @@ import java.time.LocalDate;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.doNothing;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.patch;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
@@ -153,5 +152,20 @@ class BookControllerTest {
                         .content(requestBody))
                 .andDo(print())
                 .andExpect(status().isBadRequest());
+    }
+
+    @Test
+    @DisplayName("도서 삭제에 성공하면, 200 상태코드를 전달 받는다.")
+    void delete_whenSuccess_thenReturnStatus200() throws Exception {
+        //given
+        doNothing()
+                .when(bookService)
+                .delete(any());
+
+        //when & then
+        mockMvc.perform(delete("/books/1")
+                        .contentType("application/json"))
+                .andDo(print())
+                .andExpect(status().isOk());
     }
 }
