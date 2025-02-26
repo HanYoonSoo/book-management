@@ -29,4 +29,10 @@ public class BookRepositoryImpl implements BookRepository {
         return bookJpaRepository.findById(bookId)
                 .orElseThrow(() -> new BookException(ErrorCode.NOT_FOUND, "Not Found Book"));
     }
+
+    @Override
+    public void delete(Book book) {
+        bookJpaRepository.delete(book);
+    }
+
 }

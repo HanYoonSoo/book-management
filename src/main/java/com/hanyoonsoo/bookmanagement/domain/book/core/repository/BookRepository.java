@@ -9,4 +9,6 @@ public interface BookRepository {
     boolean existsByIsbn(String isbn);
 
     Book findByIdOrElseThrow(Long bookId);
+
+    void delete(Book book);
 }
