@@ -14,7 +14,9 @@ import org.springframework.context.annotation.Import;
 import org.springframework.dao.DataIntegrityViolationException;
 
 import java.time.LocalDate;
+import java.util.Optional;
 
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.*;
 
 @Import(JpaConfig.class)
@@ -131,5 +133,33 @@ class BookRepositoryTest {
         Book updatedBook = bookJpaRepository.findById(savedBook.getId()).orElse(null);
         assertEquals("2345678980", updatedBook.getIsbn());
         assertEquals("테스트 수정 타이틀", updatedBook.getTitle());
+    }
+
+    @Test
+    @DisplayName("존재하는 도서라면, 삭제에 성공한다.")
+    void whenExistsBook_thenDeleteSuccess() throws Exception {
+        //given
+        Author author = Author.builder()
+                .name("홍길동")
+                .email("test@example.com")
+                .build();
+
+        authorJpaRepository.save(author);
+
+        Book book = Book.of(
+                "테스트 타이틀",
+                "테스트 설명",
+                "1234567890",
+                LocalDate.now(),
+                author
+        );
+        Book savedBook = bookJpaRepository.save(book);
+
+        //when
+        bookJpaRepository.delete(savedBook);
+
+        //then
+        Optional<Book> optionalBook = bookJpaRepository.findById(savedBook.getId());
+        assertThat(optionalBook.isEmpty()).isTrue();
     }
 }
