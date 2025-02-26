@@ -172,4 +172,38 @@ class BookServiceTest {
         assertThrows(BookException.class, () -> bookService.update(request, 1L));
     }
 
+    @Test
+    @DisplayName("존재하는 도서라면, 삭제에 성공한다.")
+    void delete_whenExistsBook_thenSuccess() throws Exception {
+        //given
+        Author author = Author.of("홍길동", "test@example.com");
+        authorRepository.save(author);
+
+        Book book = Book.builder()
+                .id(1L)
+                .title("테스트 타이틀")
+                .description("테스트 설명")
+                .isbn("1234567890")
+                .publicationDate(LocalDate.now())
+                .build();
+        bookRepository.save(book);
+
+        //when
+        bookService.delete(1L);
+
+        //then
+        assertThrows(BookException.class, () -> bookRepository.findByIdOrElseThrow(1L));
+    }
+
+    @Test
+    @DisplayName("존재하지 않는 도서라면, 삭제에 실패한다.")
+    void delete_whenNotFoundBook_thenFail() throws Exception {
+        //given
+        Author author = Author.of("홍길동", "test@example.com");
+        authorRepository.save(author);
+
+        //when & then
+        assertThrows(BookException.class, () -> bookService.delete(1L));
+    }
+
 }

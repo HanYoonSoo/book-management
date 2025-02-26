@@ -30,4 +30,11 @@ public class MemoryBookRepository implements BookRepository {
         return Optional.ofNullable(books.get(bookId))
                 .orElseThrow(() -> new BookException(ErrorCode.NOT_FOUND, "Not Found Book"));
     }
+
+    @Override
+    public void delete(Book book) {
+        books.entrySet().removeIf(entry ->
+                entry.getValue().getId().equals(book.getId())
+        );
+    }
 }
