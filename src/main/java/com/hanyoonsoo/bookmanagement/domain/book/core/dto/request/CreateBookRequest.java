@@ -39,7 +39,7 @@ public class CreateBookRequest {
 
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd")
     @Schema(description = "도서 출판일", example = "2025-02-26", nullable = true)
-    private LocalDate publication_date;
+    private LocalDate publicationDate;
 
     @NotNull
     @Schema(description = "도서 저자", example = "1")
