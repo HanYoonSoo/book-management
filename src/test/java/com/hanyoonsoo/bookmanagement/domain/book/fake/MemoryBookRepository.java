@@ -1,10 +1,13 @@
 package com.hanyoonsoo.bookmanagement.domain.book.fake;
 
 import com.hanyoonsoo.bookmanagement.domain.book.core.entity.Book;
+import com.hanyoonsoo.bookmanagement.domain.book.core.exception.BookException;
 import com.hanyoonsoo.bookmanagement.domain.book.core.repository.BookRepository;
+import com.hanyoonsoo.bookmanagement.global.common.enums.ErrorCode;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Optional;
 
 public class MemoryBookRepository implements BookRepository {
 
@@ -20,5 +23,11 @@ public class MemoryBookRepository implements BookRepository {
     public boolean existsByIsbn(String isbn) {
         return books.values().stream()
                 .anyMatch(book -> book.getIsbn().equals(isbn));
+    }
+
+    @Override
+    public Book findByIdOrElseThrow(Long bookId) {
+        return Optional.ofNullable(books.get(bookId))
+                .orElseThrow(() -> new BookException(ErrorCode.NOT_FOUND, "Not Found Book"));
     }
 }

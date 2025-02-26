@@ -7,6 +7,7 @@ import com.hanyoonsoo.bookmanagement.domain.author.core.service.AuthorService;
 import com.hanyoonsoo.bookmanagement.domain.author.core.service.impl.AuthorServiceImpl;
 import com.hanyoonsoo.bookmanagement.domain.author.fake.MemoryAuthorRepository;
 import com.hanyoonsoo.bookmanagement.domain.book.core.dto.request.CreateBookRequest;
+import com.hanyoonsoo.bookmanagement.domain.book.core.dto.request.UpdateBookRequest;
 import com.hanyoonsoo.bookmanagement.domain.book.core.entity.Book;
 import com.hanyoonsoo.bookmanagement.domain.book.core.exception.BookException;
 import com.hanyoonsoo.bookmanagement.domain.book.core.repository.BookRepository;
@@ -97,6 +98,78 @@ class BookServiceTest {
 
         //when & then
         assertThrows(BookException.class, () -> bookService.create(request));
+    }
+
+    @Test
+    @DisplayName("존재하는 도서이며 isbn이 중복되지 않았다면, 수정에 성공한다.")
+    void update_whenExistsBookAndIsbnNotDuplicated_thenSuccess() throws Exception {
+        //given
+        Author author = Author.of("홍길동", "test@example.com");
+        authorRepository.save(author);
+
+        Book book = Book.of(
+                "테스트 타이틀",
+                "테스트 설명",
+                "1234567890",
+                LocalDate.now(),
+                author
+        );
+        bookRepository.save(book);
+
+        UpdateBookRequest request = UpdateBookRequest.builder()
+                .title("테스트 수정 타이틀")
+                .description("테스트 수정 설명")
+                .isbn("2345678980")
+                .publicationDate(LocalDate.now())
+                .build();
+
+        //when & then
+        assertDoesNotThrow(() -> bookService.update(request, 1L));
+    }
+
+    @Test
+    @DisplayName("존재하지 않는 도서라면, 수정에 실패한다.")
+    void update_whenNotFoundBook_thenFail() throws Exception {
+        //given
+        Author author = Author.of("홍길동", "test@example.com");
+        authorRepository.save(author);
+
+        UpdateBookRequest request = UpdateBookRequest.builder()
+                .title("테스트 수정 타이틀")
+                .description("테스트 수정 설명")
+                .isbn("2345678980")
+                .publicationDate(LocalDate.now())
+                .build();
+
+        //when & then
+        assertThrows(BookException.class, () -> bookService.update(request, 1L));
+    }
+
+    @Test
+    @DisplayName("isbn이 중복되었다면, 수정에 실패한다.")
+    void update_whenIsbnDuplicated_thenFail() throws Exception {
+        //given
+        Author author = Author.of("홍길동", "test@example.com");
+        authorRepository.save(author);
+
+        Book book = Book.of(
+                "테스트 타이틀",
+                "테스트 설명",
+                "1234567890",
+                LocalDate.now(),
+                author
+        );
+        bookRepository.save(book);
+
+        UpdateBookRequest request = UpdateBookRequest.builder()
+                .title("테스트 수정 타이틀")
+                .description("테스트 수정 설명")
+                .isbn("1234567890")
+                .publicationDate(LocalDate.now())
+                .build();
+
+        //when & then
+        assertThrows(BookException.class, () -> bookService.update(request, 1L));
     }
 
 }
