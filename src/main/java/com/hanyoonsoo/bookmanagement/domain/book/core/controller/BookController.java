@@ -41,5 +41,16 @@ public interface BookController {
     )
     ApiResponse<Void> update(UpdateBookRequest request, Long bookId);
 
+    @Operation(
+            summary = "Book 삭제",
+            description = "Book 삭제 API, 존재하는 Book Id의 경우 Book 삭제에 성공합니다. " +
+                    "존재하지 않는 Book Id일 경우 404 에러를 반환합니다. "
+    )
+    @io.swagger.v3.oas.annotations.responses.ApiResponse(
+            responseCode = "200", description = "Book 삭제 성공"
+    )
+    @io.swagger.v3.oas.annotations.responses.ApiResponse(
+            responseCode = "404", description = "존재하지 않는 Book Id일 경우 Book 삭제 실패"
+    )
     ApiResponse<Void> delete(Long bookId);
 }
