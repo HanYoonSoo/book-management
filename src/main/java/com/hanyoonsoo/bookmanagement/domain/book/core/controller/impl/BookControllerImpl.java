@@ -4,6 +4,7 @@ import com.hanyoonsoo.bookmanagement.domain.book.core.controller.BookController;
 import com.hanyoonsoo.bookmanagement.domain.book.core.dto.request.CreateBookRequest;
 import com.hanyoonsoo.bookmanagement.domain.book.core.dto.request.GetBooksCondition;
 import com.hanyoonsoo.bookmanagement.domain.book.core.dto.request.UpdateBookRequest;
+import com.hanyoonsoo.bookmanagement.domain.book.core.dto.response.GetBookDetailResponse;
 import com.hanyoonsoo.bookmanagement.domain.book.core.dto.response.GetBookResponse;
 import com.hanyoonsoo.bookmanagement.domain.book.core.service.BookService;
 import com.hanyoonsoo.bookmanagement.global.common.dto.ApiResponse;
@@ -51,6 +52,14 @@ public class BookControllerImpl implements BookController {
             @RequestParam(value = "pageNo", required = false, defaultValue = "0") int pageNo)
     {
         PageResponse<GetBookResponse> response = bookService.readBooks(condition, pageNo);
+
+        return ApiResponse.ok(response);
+    }
+
+    @Override
+    @GetMapping("/books/{bookId}")
+    public ApiResponse<GetBookDetailResponse> readBookDetail(@PathVariable("bookId") Long bookId) {
+        GetBookDetailResponse response = bookService.readBookDetail(bookId);
 
         return ApiResponse.ok(response);
     }

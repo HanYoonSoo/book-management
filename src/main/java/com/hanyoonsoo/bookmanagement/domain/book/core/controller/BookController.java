@@ -3,6 +3,7 @@ package com.hanyoonsoo.bookmanagement.domain.book.core.controller;
 import com.hanyoonsoo.bookmanagement.domain.book.core.dto.request.CreateBookRequest;
 import com.hanyoonsoo.bookmanagement.domain.book.core.dto.request.GetBooksCondition;
 import com.hanyoonsoo.bookmanagement.domain.book.core.dto.request.UpdateBookRequest;
+import com.hanyoonsoo.bookmanagement.domain.book.core.dto.response.GetBookDetailResponse;
 import com.hanyoonsoo.bookmanagement.domain.book.core.dto.response.GetBookResponse;
 import com.hanyoonsoo.bookmanagement.global.common.dto.ApiResponse;
 import com.hanyoonsoo.bookmanagement.global.common.dto.PageResponse;
@@ -68,4 +69,6 @@ public interface BookController {
             responseCode = "200", description = "Book 목록 조회 성공"
     )
     ApiResponse<PageResponse<GetBookResponse>> readBooks(GetBooksCondition condition, int pageNo);
+
+    ApiResponse<GetBookDetailResponse> readBookDetail(Long bookId);
 }
