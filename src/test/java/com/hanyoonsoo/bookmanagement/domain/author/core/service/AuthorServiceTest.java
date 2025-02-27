@@ -9,6 +9,8 @@ import com.hanyoonsoo.bookmanagement.domain.author.core.repository.AuthorReposit
 import com.hanyoonsoo.bookmanagement.domain.author.core.service.impl.AuthorServiceImpl;
 import com.hanyoonsoo.bookmanagement.domain.author.fake.MemoryAuthorRepository;
 import com.hanyoonsoo.bookmanagement.domain.author.fixture.AuthorFixture;
+import com.hanyoonsoo.bookmanagement.domain.book.core.repository.BookRepository;
+import com.hanyoonsoo.bookmanagement.domain.book.fake.MemoryBookRepository;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -21,11 +23,14 @@ class AuthorServiceTest {
 
     private AuthorService authorService;
     private AuthorRepository authorRepository;
+    private BookRepository bookRepository;
 
     @BeforeEach
     void setUp() {
         authorRepository = new MemoryAuthorRepository();
-        authorService = new AuthorServiceImpl(authorRepository);
+        bookRepository = new MemoryBookRepository();
+
+        authorService = new AuthorServiceImpl(authorRepository, bookRepository);
     }
 
     @Test
@@ -155,5 +160,24 @@ class AuthorServiceTest {
         //then
         assertEquals(author.getEmail(), response.getEmail());
         assertEquals(author.getName(), response.getName());
+    }
+
+    @Test
+    @DisplayName("전달받은 Id의 저자가 존재하면, 삭제에 성공한다.")
+    void delete_whenExistsAuthor_thenSuccess() throws Exception {
+        //given
+        Author author = Author.builder()
+                .id(1L)
+                .name("홍길동")
+                .email("test@example.com")
+                .build();
+
+        authorRepository.save(author);
+
+        //when
+        authorService.delete(1L);
+
+        //then
+        assertThrows(AuthorException.class, () -> authorRepository.findByIdOrElseThrow(1L));
     }
 }
