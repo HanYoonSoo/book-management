@@ -6,19 +6,24 @@ import com.hanyoonsoo.bookmanagement.domain.author.core.repository.AuthorReposit
 import com.hanyoonsoo.bookmanagement.domain.author.core.service.AuthorService;
 import com.hanyoonsoo.bookmanagement.domain.author.core.service.impl.AuthorServiceImpl;
 import com.hanyoonsoo.bookmanagement.domain.author.fake.MemoryAuthorRepository;
+import com.hanyoonsoo.bookmanagement.domain.book.core.dto.SortCriteria;
 import com.hanyoonsoo.bookmanagement.domain.book.core.dto.request.CreateBookRequest;
+import com.hanyoonsoo.bookmanagement.domain.book.core.dto.request.GetBooksCondition;
 import com.hanyoonsoo.bookmanagement.domain.book.core.dto.request.UpdateBookRequest;
+import com.hanyoonsoo.bookmanagement.domain.book.core.dto.response.GetBookResponse;
 import com.hanyoonsoo.bookmanagement.domain.book.core.entity.Book;
 import com.hanyoonsoo.bookmanagement.domain.book.core.exception.BookException;
 import com.hanyoonsoo.bookmanagement.domain.book.core.repository.BookRepository;
 import com.hanyoonsoo.bookmanagement.domain.book.core.service.impl.BookServiceImpl;
 import com.hanyoonsoo.bookmanagement.domain.book.fake.MemoryBookRepository;
+import com.hanyoonsoo.bookmanagement.global.common.dto.PageResponse;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
 import java.time.LocalDate;
 
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.*;
 
 class BookServiceTest {
@@ -206,4 +211,183 @@ class BookServiceTest {
         assertThrows(BookException.class, () -> bookService.delete(1L));
     }
 
+    @Test
+    @DisplayName("필터링 없는 도서 Pagination 조회에 성공한다.")
+    void readBooks_whenNoFilter_thenReturnPaginatedBooksSuccess() throws Exception{
+        //given
+        Author author = Author.of("홍길동", "test@example.com");
+        authorRepository.save(author);
+
+        Book book = Book.of(
+                "테스트 타이틀",
+                "테스트 설명",
+                "1234567890",
+                LocalDate.now(),
+                author
+        );
+        bookRepository.save(book);
+
+        //when
+        PageResponse<GetBookResponse> response = bookService.readBooks(null, 0);
+
+        //then
+        assertThat(response.getData()).isNotNull();
+    }
+
+    @Test
+    @DisplayName("필터링 있는 도서 Pagination 조회에 성공한다.")
+    void readBooks_whenFilterApplied_thenReturnPaginatedBooksSuccess() {
+        //given
+        Author author = Author.of("홍길동", "test@example.com");
+        authorRepository.save(author);
+
+        Book book = Book.of(
+                "테스트 타이틀",
+                "테스트 설명",
+                "1234567890",
+                LocalDate.now(),
+                author
+        );
+        bookRepository.save(book);
+
+        GetBooksCondition condition = new GetBooksCondition();
+
+        condition.setTitle("타이틀");
+
+        //when
+        PageResponse<GetBookResponse> response = bookService.readBooks(condition, 0);
+
+        //then
+        assertThat(response.getData()).isNotNull();
+    }
+
+    @Test
+    @DisplayName("도서 출판일 오름차순 Pagination 조회에 성공한다.")
+    void readBooks_whenPublicationDateAsc_thenReturnPaginatedBooksSuccess() {
+        //given
+        saveTestFixture();
+
+        GetBooksCondition condition = new GetBooksCondition();
+        condition.setSortCriteria(SortCriteria.PUBLICATION_DATE_ASC);
+
+        //when
+        PageResponse<GetBookResponse> response =  bookService.readBooks(condition, 0);
+
+        //then
+        for(int i = 1; i <= 2; i++){
+            GetBookResponse bookResponse = response.getData().get(i - 1);
+
+            assertEquals(bookResponse.getTitle(), "테스트 타이틀" + i);
+        }
+    }
+
+    @Test
+    @DisplayName("도서 출판일 내림차순 Pagination 조회에 성공한다.")
+    void readBooks_whenPublicationDateDesc_thenReturnPaginatedBooksSuccess() {
+        //given
+        saveTestFixture();
+
+        GetBooksCondition condition = new GetBooksCondition();
+        condition.setSortCriteria(SortCriteria.PUBLICATION_DATE_DESC);
+
+        //when
+        PageResponse<GetBookResponse> response =  bookService.readBooks(condition, 0);
+
+        //then
+        for(int i = 2; i >= 1; i--){
+            GetBookResponse bookResponse = response.getData().get(2 - i);
+
+            assertEquals(bookResponse.getTitle(), "테스트 타이틀" + i);
+        }
+    }
+
+    @Test
+    @DisplayName("도서 타이틀 오름차순 Pagination 조회에 성공한다.")
+    void readBooks_whenTitleAsc_thenReturnPaginatedBooksSuccess() {
+        //given
+        saveTestFixture();
+
+        GetBooksCondition condition = new GetBooksCondition();
+        condition.setSortCriteria(SortCriteria.TITLE_ASC);
+
+        //when
+        PageResponse<GetBookResponse> response =  bookService.readBooks(condition, 0);
+
+        //then
+        for(int i = 1; i <= 2; i++){
+            GetBookResponse bookResponse = response.getData().get(i - 1);
+
+            assertEquals(bookResponse.getTitle(), "테스트 타이틀" + i);
+        }
+    }
+
+    @Test
+    @DisplayName("도서 타이틀 내림차순 Pagination 조회에 성공한다.")
+    void readBooks_whenTitleDesc_thenReturnPaginatedBooksSuccess() {
+        //given
+        saveTestFixture();
+
+        GetBooksCondition condition = new GetBooksCondition();
+        condition.setSortCriteria(SortCriteria.TITLE_DESC);
+
+        //when
+        PageResponse<GetBookResponse> response =  bookService.readBooks(condition, 0);
+
+        //then
+        for(int i = 2; i >= 1; i--){
+            GetBookResponse bookResponse = response.getData().get(2 - i);
+
+            assertEquals(bookResponse.getTitle(), "테스트 타이틀" + i);
+        }
+    }
+
+    @Test
+    @DisplayName("필터링에 걸리는 도서가 없다면 빈값 반환에 성공한다.")
+    void readBooks_whenFilterNoMatch_thenReturnEmptyPage() {
+        //given
+        Author author = Author.of("홍길동", "test@example.com");
+        authorRepository.save(author);
+
+        Book book = Book.of(
+                "테스트 타이틀",
+                "테스트 설명",
+                "1234567890",
+                LocalDate.now(),
+                author
+        );
+        bookRepository.save(book);
+
+        GetBooksCondition condition = new GetBooksCondition();
+
+        condition.setTitle("조회X");
+
+        //when
+        PageResponse<GetBookResponse> response = bookService.readBooks(condition, 0);
+
+        //then
+        assertThat(response.getData()).isEmpty();
+    }
+
+    private void saveTestFixture(){
+        Author author = Author.of("홍길동", "test@example.com");
+        authorRepository.save(author);
+
+        Book book1 = Book.of(
+                "테스트 타이틀1",
+                "테스트 설명1",
+                "1234567890",
+                LocalDate.now(),
+                author
+        );
+        bookRepository.save(book1);
+
+        Book book2 = Book.of(
+                "테스트 타이틀2",
+                "테스트 설명2",
+                "1234567990",
+                LocalDate.now().plusDays(1L),
+                author
+        );
+        bookRepository.save(book2);
+    }
 }
