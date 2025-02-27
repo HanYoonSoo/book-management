@@ -5,11 +5,11 @@ import com.hanyoonsoo.bookmanagement.domain.author.core.service.AuthorService;
 import com.hanyoonsoo.bookmanagement.domain.book.core.dto.request.CreateBookRequest;
 import com.hanyoonsoo.bookmanagement.domain.book.core.dto.request.GetBooksCondition;
 import com.hanyoonsoo.bookmanagement.domain.book.core.dto.request.UpdateBookRequest;
+import com.hanyoonsoo.bookmanagement.domain.book.core.dto.response.GetBookDetailResponse;
 import com.hanyoonsoo.bookmanagement.domain.book.core.dto.response.GetBookResponse;
 import com.hanyoonsoo.bookmanagement.domain.book.core.entity.Book;
 import com.hanyoonsoo.bookmanagement.domain.book.core.exception.BookException;
 import com.hanyoonsoo.bookmanagement.domain.book.core.repository.BookRepository;
-import com.hanyoonsoo.bookmanagement.domain.book.core.repository.CustomBookRepository;
 import com.hanyoonsoo.bookmanagement.domain.book.core.service.BookService;
 import com.hanyoonsoo.bookmanagement.global.common.dto.PageResponse;
 import com.hanyoonsoo.bookmanagement.global.common.enums.ErrorCode;
@@ -88,6 +88,14 @@ public class BookServiceImpl implements BookService {
         Page<Book> books = bookRepository.findPagedBooksByCondition(condition, pageable);
 
         return PageResponse.of(books, GetBookResponse::from);
+    }
+
+    @Override
+    @Transactional(readOnly = true)
+    public GetBookDetailResponse readBookDetail(Long bookId) {
+        Book book = validateExistsBook(bookId);
+
+        return GetBookDetailResponse.from(book);
     }
 
     private Book validateExistsBook(Long bookId) {
