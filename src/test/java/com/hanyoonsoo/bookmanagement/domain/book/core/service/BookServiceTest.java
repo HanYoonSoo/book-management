@@ -6,6 +6,7 @@ import com.hanyoonsoo.bookmanagement.domain.author.core.repository.AuthorReposit
 import com.hanyoonsoo.bookmanagement.domain.author.core.service.AuthorService;
 import com.hanyoonsoo.bookmanagement.domain.author.core.service.impl.AuthorServiceImpl;
 import com.hanyoonsoo.bookmanagement.domain.author.fake.MemoryAuthorRepository;
+import com.hanyoonsoo.bookmanagement.domain.author.fixture.AuthorFixture;
 import com.hanyoonsoo.bookmanagement.domain.book.core.dto.SortCriteria;
 import com.hanyoonsoo.bookmanagement.domain.book.core.dto.request.CreateBookRequest;
 import com.hanyoonsoo.bookmanagement.domain.book.core.dto.request.GetBooksCondition;
@@ -17,6 +18,7 @@ import com.hanyoonsoo.bookmanagement.domain.book.core.exception.BookException;
 import com.hanyoonsoo.bookmanagement.domain.book.core.repository.BookRepository;
 import com.hanyoonsoo.bookmanagement.domain.book.core.service.impl.BookServiceImpl;
 import com.hanyoonsoo.bookmanagement.domain.book.fake.MemoryBookRepository;
+import com.hanyoonsoo.bookmanagement.domain.book.fixture.BookFixture;
 import com.hanyoonsoo.bookmanagement.global.common.dto.PageResponse;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
@@ -47,7 +49,7 @@ class BookServiceTest {
     @DisplayName("존재하는 저자이며 isbn이 중복되지 않았다면, 도서 생성에 성공한다.")
     void create_whenExistsAuthorAndIsbnNotDuplicated_thenSuccess() throws Exception {
         //given
-        Author author = Author.of("홍길동", "test@example.com");
+        Author author = AuthorFixture.createAuthor();
         authorRepository.save(author);
 
         CreateBookRequest request = CreateBookRequest.builder()
@@ -82,16 +84,10 @@ class BookServiceTest {
     @DisplayName("isbn이 중복되었다면, 도서 생성에 실패한다.")
     void create_whenIsbnDuplicated_thenFail() throws Exception {
         //given
-        Author author = Author.of("홍길동", "test@example.com");
+        Author author = AuthorFixture.createAuthor();
         authorRepository.save(author);
 
-        Book book = Book.of(
-                "테스트 타이틀",
-                "테스트 설명",
-                "1234567890",
-                LocalDate.now(),
-                author
-        );
+        Book book = BookFixture.createBook(author);
         bookRepository.save(book);
 
         CreateBookRequest request = CreateBookRequest.builder()
@@ -110,16 +106,10 @@ class BookServiceTest {
     @DisplayName("존재하는 도서이며 isbn이 중복되지 않았다면, 수정에 성공한다.")
     void update_whenExistsBookAndIsbnNotDuplicated_thenSuccess() throws Exception {
         //given
-        Author author = Author.of("홍길동", "test@example.com");
+        Author author = AuthorFixture.createAuthor();
         authorRepository.save(author);
 
-        Book book = Book.of(
-                "테스트 타이틀",
-                "테스트 설명",
-                "1234567890",
-                LocalDate.now(),
-                author
-        );
+        Book book = BookFixture.createBook(author);
         bookRepository.save(book);
 
         UpdateBookRequest request = UpdateBookRequest.builder()
@@ -137,7 +127,7 @@ class BookServiceTest {
     @DisplayName("존재하지 않는 도서라면, 수정에 실패한다.")
     void update_whenNotFoundBook_thenFail() throws Exception {
         //given
-        Author author = Author.of("홍길동", "test@example.com");
+        Author author = AuthorFixture.createAuthor();
         authorRepository.save(author);
 
         UpdateBookRequest request = UpdateBookRequest.builder()
@@ -155,16 +145,10 @@ class BookServiceTest {
     @DisplayName("isbn이 중복되었다면, 수정에 실패한다.")
     void update_whenIsbnDuplicated_thenFail() throws Exception {
         //given
-        Author author = Author.of("홍길동", "test@example.com");
+        Author author = AuthorFixture.createAuthor();
         authorRepository.save(author);
 
-        Book book = Book.of(
-                "테스트 타이틀",
-                "테스트 설명",
-                "1234567890",
-                LocalDate.now(),
-                author
-        );
+        Book book = BookFixture.createBook(author);
         bookRepository.save(book);
 
         UpdateBookRequest request = UpdateBookRequest.builder()
@@ -182,7 +166,7 @@ class BookServiceTest {
     @DisplayName("존재하는 도서라면, 삭제에 성공한다.")
     void delete_whenExistsBook_thenSuccess() throws Exception {
         //given
-        Author author = Author.of("홍길동", "test@example.com");
+        Author author = AuthorFixture.createAuthor();
         authorRepository.save(author);
 
         Book book = Book.builder()
@@ -205,7 +189,7 @@ class BookServiceTest {
     @DisplayName("존재하지 않는 도서라면, 삭제에 실패한다.")
     void delete_whenNotFoundBook_thenFail() throws Exception {
         //given
-        Author author = Author.of("홍길동", "test@example.com");
+        Author author = AuthorFixture.createAuthor();
         authorRepository.save(author);
 
         //when & then
@@ -216,16 +200,10 @@ class BookServiceTest {
     @DisplayName("필터링 없는 도서 Pagination 조회에 성공한다.")
     void readBooks_whenNoFilter_thenReturnPaginatedBooksSuccess() throws Exception {
         //given
-        Author author = Author.of("홍길동", "test@example.com");
+        Author author = AuthorFixture.createAuthor();
         authorRepository.save(author);
 
-        Book book = Book.of(
-                "테스트 타이틀",
-                "테스트 설명",
-                "1234567890",
-                LocalDate.now(),
-                author
-        );
+        Book book = BookFixture.createBook(author);
         bookRepository.save(book);
 
         //when
@@ -239,16 +217,10 @@ class BookServiceTest {
     @DisplayName("필터링 있는 도서 Pagination 조회에 성공한다.")
     void readBooks_whenFilterApplied_thenReturnPaginatedBooksSuccess() {
         //given
-        Author author = Author.of("홍길동", "test@example.com");
+        Author author = AuthorFixture.createAuthor();
         authorRepository.save(author);
 
-        Book book = Book.of(
-                "테스트 타이틀",
-                "테스트 설명",
-                "1234567890",
-                LocalDate.now(),
-                author
-        );
+        Book book = BookFixture.createBook(author);
         bookRepository.save(book);
 
         GetBooksCondition condition = new GetBooksCondition();
@@ -266,7 +238,7 @@ class BookServiceTest {
     @DisplayName("도서 출판일 오름차순 Pagination 조회에 성공한다.")
     void readBooks_whenPublicationDateAsc_thenReturnPaginatedBooksSuccess() {
         //given
-        saveTestFixture();
+        saveAuthorAndBookForTest();
 
         GetBooksCondition condition = new GetBooksCondition();
         condition.setSortCriteria(SortCriteria.PUBLICATION_DATE_ASC);
@@ -286,7 +258,7 @@ class BookServiceTest {
     @DisplayName("도서 출판일 내림차순 Pagination 조회에 성공한다.")
     void readBooks_whenPublicationDateDesc_thenReturnPaginatedBooksSuccess() {
         //given
-        saveTestFixture();
+        saveAuthorAndBookForTest();
 
         GetBooksCondition condition = new GetBooksCondition();
         condition.setSortCriteria(SortCriteria.PUBLICATION_DATE_DESC);
@@ -306,7 +278,7 @@ class BookServiceTest {
     @DisplayName("도서 타이틀 오름차순 Pagination 조회에 성공한다.")
     void readBooks_whenTitleAsc_thenReturnPaginatedBooksSuccess() {
         //given
-        saveTestFixture();
+        saveAuthorAndBookForTest();
 
         GetBooksCondition condition = new GetBooksCondition();
         condition.setSortCriteria(SortCriteria.TITLE_ASC);
@@ -326,7 +298,7 @@ class BookServiceTest {
     @DisplayName("도서 타이틀 내림차순 Pagination 조회에 성공한다.")
     void readBooks_whenTitleDesc_thenReturnPaginatedBooksSuccess() {
         //given
-        saveTestFixture();
+        saveAuthorAndBookForTest();
 
         GetBooksCondition condition = new GetBooksCondition();
         condition.setSortCriteria(SortCriteria.TITLE_DESC);
@@ -346,16 +318,10 @@ class BookServiceTest {
     @DisplayName("필터링에 걸리는 도서가 없다면 빈값 반환에 성공한다.")
     void readBooks_whenFilterNoMatch_thenReturnEmptyPage() {
         //given
-        Author author = Author.of("홍길동", "test@example.com");
+        Author author = AuthorFixture.createAuthor();
         authorRepository.save(author);
 
-        Book book = Book.of(
-                "테스트 타이틀",
-                "테스트 설명",
-                "1234567890",
-                LocalDate.now(),
-                author
-        );
+        Book book = BookFixture.createBook(author);
         bookRepository.save(book);
 
         GetBooksCondition condition = new GetBooksCondition();
@@ -373,16 +339,10 @@ class BookServiceTest {
     @DisplayName("Book Id가 존재한다면, 도서 상세 조회에 성공한다.")
     void readBookDetail_whenExistsBook_thenSuccess() throws Exception {
         //given
-        Author author = Author.of("홍길동", "test@example.com");
+        Author author = AuthorFixture.createAuthor();
         authorRepository.save(author);
 
-        Book book = Book.of(
-                "테스트 타이틀",
-                "테스트 설명",
-                "1234567890",
-                LocalDate.now(),
-                author
-        );
+        Book book = BookFixture.createBook(author);
         bookRepository.save(book);
 
         //when
@@ -400,8 +360,8 @@ class BookServiceTest {
         assertThrows(BookException.class, () -> bookService.readBookDetail(1L));
     }
 
-    private void saveTestFixture() {
-        Author author = Author.of("홍길동", "test@example.com");
+    private void saveAuthorAndBookForTest() {
+        Author author = AuthorFixture.createAuthor();
         authorRepository.save(author);
 
         Book book1 = Book.of(
