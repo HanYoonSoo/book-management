@@ -3,6 +3,7 @@ package com.hanyoonsoo.bookmanagement.domain.book.core.controller;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.hanyoonsoo.bookmanagement.domain.book.core.dto.request.CreateBookRequest;
 import com.hanyoonsoo.bookmanagement.domain.book.core.dto.request.UpdateBookRequest;
+import com.hanyoonsoo.bookmanagement.domain.book.core.dto.response.GetBookDetailResponse;
 import com.hanyoonsoo.bookmanagement.domain.book.core.service.BookService;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -15,6 +16,7 @@ import java.time.LocalDate;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.doNothing;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
@@ -164,6 +166,20 @@ class BookControllerTest {
 
         //when & then
         mockMvc.perform(delete("/books/1")
+                        .contentType("application/json"))
+                .andDo(print())
+                .andExpect(status().isOk());
+    }
+
+    @Test
+    @DisplayName("도서 상세조회에 성공하면, 200 상태코드를 전달 받는다.")
+    void readBookDetail_whenSuccess_thenReturnStatus200() throws Exception {
+        //given
+        given(bookService.readBookDetail(1L))
+                .willReturn(any(GetBookDetailResponse.class));
+
+        //when & then
+        mockMvc.perform(get("/books/1")
                         .contentType("application/json"))
                 .andDo(print())
                 .andExpect(status().isOk());
