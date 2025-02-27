@@ -16,6 +16,8 @@ import org.springframework.util.StringUtils;
 
 import java.util.List;
 
+import static org.springframework.util.StringUtils.*;
+
 @Service
 @RequiredArgsConstructor
 public class AuthorServiceImpl implements AuthorService {
@@ -37,9 +39,9 @@ public class AuthorServiceImpl implements AuthorService {
     public void update(UpdateAuthorRequest request, Long authorId) {
         Author author = validateExistsAuthor(authorId);
 
-        if(StringUtils.hasText(request.getName())) author.modifyName(request.getName());
+        if(hasText(request.getName())) author.modifyName(request.getName());
 
-        if(StringUtils.hasText(request.getEmail())){
+        if(hasText(request.getEmail())){
             validateDuplicatedEmail(request.getEmail());
             author.modifyEmail(request.getEmail());
         }
