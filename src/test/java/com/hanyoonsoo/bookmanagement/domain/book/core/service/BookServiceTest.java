@@ -41,7 +41,7 @@ class BookServiceTest {
         authorRepository = new MemoryAuthorRepository();
         bookRepository = new MemoryBookRepository();
 
-        AuthorService authorService = new AuthorServiceImpl(authorRepository);
+        AuthorService authorService = new AuthorServiceImpl(authorRepository, bookRepository);
         bookService = new BookServiceImpl(authorService, bookRepository);
     }
 
