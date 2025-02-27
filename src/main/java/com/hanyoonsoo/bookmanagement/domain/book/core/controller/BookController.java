@@ -1,8 +1,11 @@
 package com.hanyoonsoo.bookmanagement.domain.book.core.controller;
 
 import com.hanyoonsoo.bookmanagement.domain.book.core.dto.request.CreateBookRequest;
+import com.hanyoonsoo.bookmanagement.domain.book.core.dto.request.GetBooksCondition;
 import com.hanyoonsoo.bookmanagement.domain.book.core.dto.request.UpdateBookRequest;
+import com.hanyoonsoo.bookmanagement.domain.book.core.dto.response.GetBookResponse;
 import com.hanyoonsoo.bookmanagement.global.common.dto.ApiResponse;
+import com.hanyoonsoo.bookmanagement.global.common.dto.PageResponse;
 import io.swagger.v3.oas.annotations.Operation;
 
 public interface BookController {
@@ -53,4 +56,6 @@ public interface BookController {
             responseCode = "404", description = "존재하지 않는 Book Id일 경우 Book 삭제 실패"
     )
     ApiResponse<Void> delete(Long bookId);
+
+    ApiResponse<PageResponse<GetBookResponse>> readBooks(GetBooksCondition condition, int pageNo);
 }
