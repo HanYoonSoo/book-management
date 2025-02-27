@@ -1,11 +1,14 @@
 package com.hanyoonsoo.bookmanagement.domain.book.core.repository.impl;
 
+import com.hanyoonsoo.bookmanagement.domain.book.core.dto.request.GetBooksCondition;
 import com.hanyoonsoo.bookmanagement.domain.book.core.entity.Book;
 import com.hanyoonsoo.bookmanagement.domain.book.core.exception.BookException;
 import com.hanyoonsoo.bookmanagement.domain.book.core.repository.BookRepository;
 import com.hanyoonsoo.bookmanagement.domain.book.core.repository.jpa.BookJpaRepository;
 import com.hanyoonsoo.bookmanagement.global.common.enums.ErrorCode;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Repository;
 
 @Repository
@@ -33,6 +36,11 @@ public class BookRepositoryImpl implements BookRepository {
     @Override
     public void delete(Book book) {
         bookJpaRepository.delete(book);
+    }
+
+    @Override
+    public Page<Book> findPagedBooksByCondition(GetBooksCondition condition, Pageable pageable) {
+        return bookJpaRepository.findPagedBooksByCondition(condition, pageable);
     }
 
 }
