@@ -29,7 +29,7 @@ public class BookRepositoryImpl implements BookRepository {
 
     @Override
     public Book findByIdOrElseThrow(Long bookId) {
-        return bookJpaRepository.findById(bookId)
+        return bookJpaRepository.findByIdWithAuthor(bookId)
                 .orElseThrow(() -> new BookException(ErrorCode.NOT_FOUND, "Not Found Book"));
     }
 
