@@ -8,11 +8,13 @@ import com.querydsl.core.BooleanBuilder;
 import com.querydsl.core.types.Order;
 import com.querydsl.core.types.OrderSpecifier;
 import com.querydsl.core.types.dsl.BooleanExpression;
+import com.querydsl.jpa.impl.JPAQuery;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.support.PageableExecutionUtils;
 import org.springframework.stereotype.Repository;
 
 import java.time.LocalDate;
@@ -29,7 +31,7 @@ public class CustomBookRepositoryImpl implements CustomBookRepository {
 
     @Override
     public Page<Book> findPagedBooksByCondition(GetBooksCondition condition, Pageable pageable) {
-        List<Book> results =  jpaQueryFactory.selectFrom(book)
+        List<Book> books =  jpaQueryFactory.selectFrom(book)
                 .where(
                         bookTitleContains(condition.getTitle()),
                         bookIsbnContains(condition.getIsbn()),
@@ -42,17 +44,18 @@ public class CustomBookRepositoryImpl implements CustomBookRepository {
                 .limit(pageable.getPageSize())
                 .fetch();
 
-        long total = jpaQueryFactory.select(book.count())
+        JPAQuery<Long> countQuery = jpaQueryFactory
+                .select(book.count())
                 .from(book)
                 .where(
                         bookTitleContains(condition.getTitle()),
                         bookIsbnContains(condition.getIsbn()),
                         bookAuthorNameContains(condition.getAuthorName()),
-                        bookPublicationDateBetween(condition.getStartPublicationDate(), condition.getEndPublicationDate())
-                )
-                .fetchOne();
+                        bookPublicationDateBetween(condition.getStartPublicationDate(), condition.getEndPublicationDate()),
+                        createSortPredicate(condition)
+                );
 
-        return new PageImpl<>(results, pageable, total);
+        return PageableExecutionUtils.getPage(books, pageable, countQuery::fetchOne);
     }
 
     private BooleanBuilder bookTitleContains(String title) {
