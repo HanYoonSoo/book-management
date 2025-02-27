@@ -1,13 +1,13 @@
 package com.hanyoonsoo.bookmanagement.domain.book.core.dto.response;
 
 import com.hanyoonsoo.bookmanagement.domain.book.core.entity.Book;
-import lombok.Builder;
 import lombok.Getter;
+import lombok.experimental.SuperBuilder;
 
 import java.time.LocalDate;
 
 @Getter
-@Builder
+@SuperBuilder
 public class GetBookResponse {
 
     private Long bookId;
