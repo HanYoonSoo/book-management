@@ -10,6 +10,7 @@ import com.hanyoonsoo.bookmanagement.domain.author.core.service.AuthorService;
 import com.hanyoonsoo.bookmanagement.global.common.enums.ErrorCode;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.StringUtils;
 
 import java.util.List;
@@ -21,6 +22,7 @@ public class AuthorServiceImpl implements AuthorService {
     private final AuthorRepository authorRepository;
 
     @Override
+    @Transactional
     public void create(CreateAuthorRequest request) {
         validateDuplicatedEmail(request.getEmail());
 
@@ -29,6 +31,7 @@ public class AuthorServiceImpl implements AuthorService {
     }
 
     @Override
+    @Transactional
     public void update(UpdateAuthorRequest request, Long authorId) {
         Author author = validateExistsAuthor(authorId);
 
@@ -41,6 +44,7 @@ public class AuthorServiceImpl implements AuthorService {
     }
 
     @Override
+    @Transactional(readOnly = true)
     public List<GetAuthorResponse> readAuthors() {
         List<Author> authors = authorRepository.findAll();
 
@@ -50,19 +54,22 @@ public class AuthorServiceImpl implements AuthorService {
     }
 
     @Override
+    @Transactional(readOnly = true)
     public GetAuthorResponse readAuthorDetail(Long authorId) {
         Author author = validateExistsAuthor(authorId);
 
         return GetAuthorResponse.from(author);
     }
 
+    @Override
+    @Transactional(readOnly = true)
+    public Author validateExistsAuthor(Long authorId) {
+        return authorRepository.findByIdOrElseThrow(authorId);
+    }
+
     private void validateDuplicatedEmail(String email) {
         boolean exists = authorRepository.existsByEmail(email);
 
         if(exists) throw new AuthorException(ErrorCode.DUPLICATED, "Already Exists Email");
-    }
-
-    private Author validateExistsAuthor(Long authorId) {
-        return authorRepository.findByIdOrElseThrow(authorId);
     }
 }

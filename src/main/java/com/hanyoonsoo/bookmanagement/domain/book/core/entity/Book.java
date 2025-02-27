@@ -42,4 +42,36 @@ public class Book extends BaseTimeEntity {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "author_id", nullable = false)
     private Author author;
+
+    public static Book of(
+            String title,
+            String description,
+            String isbn,
+            LocalDate publicationDate,
+            Author author
+    ) {
+        return Book.builder()
+                .title(title)
+                .isbn(isbn)
+                .publicationDate(publicationDate)
+                .description(description)
+                .author(author)
+                .build();
+    }
+
+    public void modifyTitle(String title) {
+        this.title = title;
+    }
+
+    public void modifyIsbn(String isbn) {
+        this.isbn = isbn;
+    }
+
+    public void modifyDescription(String description) {
+        this.description = description;
+    }
+
+    public void modifyPublicationDate(LocalDate publicationDate) {
+        this.publicationDate = publicationDate;
+    }
 }

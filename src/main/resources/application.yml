@@ -7,7 +7,7 @@ spring:
       path: /h2-console
   datasource:
     driver-class-name: org.h2.Driver
-    url: jdbc:h2:mem:book-management-system
+    url: jdbc:h2:./data/book-management-system
     username: sa
     password:
 
@@ -19,3 +19,7 @@ spring:
   flyway:
     baseline-on-migrate: true
     out-of-order: true
+
+springdoc:
+  swagger-ui:
+    operations-sorter: method

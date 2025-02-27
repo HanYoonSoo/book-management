@@ -8,6 +8,7 @@ import com.hanyoonsoo.bookmanagement.domain.author.core.exception.AuthorExceptio
 import com.hanyoonsoo.bookmanagement.domain.author.core.repository.AuthorRepository;
 import com.hanyoonsoo.bookmanagement.domain.author.core.service.impl.AuthorServiceImpl;
 import com.hanyoonsoo.bookmanagement.domain.author.fake.MemoryAuthorRepository;
+import com.hanyoonsoo.bookmanagement.domain.author.fixture.AuthorFixture;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -44,7 +45,7 @@ class AuthorServiceTest {
     @DisplayName("이메일이 중복되었다면, 저자 생성에 실패한다.")
     void create_whenEmailDuplicated_thenFail() throws Exception {
         // given
-        Author author = Author.of("홍길동", "test@example.com");
+        Author author = AuthorFixture.createAuthor();
         authorRepository.save(author);
 
         CreateAuthorRequest request = CreateAuthorRequest.builder()
@@ -60,7 +61,7 @@ class AuthorServiceTest {
     @DisplayName("이메일이 중복되지 않고 Author Id가 존재한다면, 저자 수정에 성공한다.")
     void update_whenEmailNotDuplicatedAndExistsAuthorId_thenSuccess() throws Exception {
         //given
-        Author author = Author.of("홍길동", "test@example.com");
+        Author author = AuthorFixture.createAuthor();
 
         authorRepository.save(author);
 
@@ -144,8 +145,15 @@ class AuthorServiceTest {
     @DisplayName("저자 상세 조회에 성공한다.")
     void readAuthorDetail_Success() throws Exception {
         //given
-        Author author = Author.of("홍길동상세조회", "testdetail@example.com");
+        Author author = AuthorFixture.createAuthor();
 
         authorRepository.save(author);
+
+        //when
+        GetAuthorResponse response = authorService.readAuthorDetail(1L);
+
+        //then
+        assertEquals(author.getEmail(), response.getEmail());
+        assertEquals(author.getName(), response.getName());
     }
 }
