@@ -16,4 +16,6 @@ public interface BookRepository{
     void delete(Book book);
 
     Page<Book> findPagedBooksByCondition(GetBooksCondition condition, Pageable pageable);
+
+    void deleteByAuthorId(Long authorId);
 }
