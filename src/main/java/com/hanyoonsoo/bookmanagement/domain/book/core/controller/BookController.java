@@ -84,5 +84,20 @@ public interface BookController {
     )
     ApiResponse<PageResponse<GetBookResponse>> readBooks(GetBooksCondition condition, int pageNo);
 
+    @Operation(
+            summary = "Book 상세 조회",
+            description = "Book 상세 조회 API, Book의 상세 정보를 반환합니다." +
+                    "존재하지 않는 Book Id일 경우 404 에러를 반환합니다. "
+    )
+    @io.swagger.v3.oas.annotations.responses.ApiResponses(
+            value = {
+                    @io.swagger.v3.oas.annotations.responses.ApiResponse(
+                            responseCode = "200", description = "Book 목록 조회 성공"
+                    ),
+                    @io.swagger.v3.oas.annotations.responses.ApiResponse(
+                            responseCode = "404", description = "존재하지 않는 Book Id일 경우 Book 상세 조회 실패"
+                    )
+            }
+    )
     ApiResponse<GetBookDetailResponse> readBookDetail(Long bookId);
 }
