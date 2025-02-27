@@ -57,5 +57,15 @@ public interface BookController {
     )
     ApiResponse<Void> delete(Long bookId);
 
+    @Operation(
+            summary = "Book 목록 조회",
+            description = "Book 목록 조회 API, 타이틀, isbn, 저자 이름, 출판일 범위로 필터링하여 페이지네이션 값을 반환합니다." +
+                    "정렬 가능 조건으로는 ID 최신순(기본값), 제목순(오름차순, 내림차순), 출판일순(오름차순, 내림차순)<br><br> " +
+                    "ENUM 값: ID 최신순 - ID_DESC, 제목순 - TITLE_ASC, TITLE_DESC, " +
+                    "출판일순 - PUBLICATION_DATE_ASC, PUBLICATION_DATE_DESC"
+    )
+    @io.swagger.v3.oas.annotations.responses.ApiResponse(
+            responseCode = "200", description = "Book 목록 조회 성공"
+    )
     ApiResponse<PageResponse<GetBookResponse>> readBooks(GetBooksCondition condition, int pageNo);
 }
