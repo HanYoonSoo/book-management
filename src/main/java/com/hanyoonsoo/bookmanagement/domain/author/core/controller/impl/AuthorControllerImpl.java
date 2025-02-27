@@ -37,6 +37,14 @@ public class AuthorControllerImpl implements AuthorController {
     }
 
     @Override
+    @DeleteMapping("/authors/{authorId}")
+    public ApiResponse<Void> delete(@PathVariable("authorId") Long authorId) {
+        authorService.delete(authorId);
+
+        return ApiResponse.ok(null);
+    }
+
+    @Override
     @GetMapping("/authors")
     public ApiResponse<List<GetAuthorResponse>> readAuthors() {
         List<GetAuthorResponse> response = authorService.readAuthors();
