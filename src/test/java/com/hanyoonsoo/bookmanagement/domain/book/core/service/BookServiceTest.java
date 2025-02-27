@@ -10,6 +10,7 @@ import com.hanyoonsoo.bookmanagement.domain.book.core.dto.SortCriteria;
 import com.hanyoonsoo.bookmanagement.domain.book.core.dto.request.CreateBookRequest;
 import com.hanyoonsoo.bookmanagement.domain.book.core.dto.request.GetBooksCondition;
 import com.hanyoonsoo.bookmanagement.domain.book.core.dto.request.UpdateBookRequest;
+import com.hanyoonsoo.bookmanagement.domain.book.core.dto.response.GetBookDetailResponse;
 import com.hanyoonsoo.bookmanagement.domain.book.core.dto.response.GetBookResponse;
 import com.hanyoonsoo.bookmanagement.domain.book.core.entity.Book;
 import com.hanyoonsoo.bookmanagement.domain.book.core.exception.BookException;
@@ -34,7 +35,7 @@ class BookServiceTest {
     private BookRepository bookRepository;
 
     @BeforeEach
-    void setUp(){
+    void setUp() {
         authorRepository = new MemoryAuthorRepository();
         bookRepository = new MemoryBookRepository();
 
@@ -213,7 +214,7 @@ class BookServiceTest {
 
     @Test
     @DisplayName("필터링 없는 도서 Pagination 조회에 성공한다.")
-    void readBooks_whenNoFilter_thenReturnPaginatedBooksSuccess() throws Exception{
+    void readBooks_whenNoFilter_thenReturnPaginatedBooksSuccess() throws Exception {
         //given
         Author author = Author.of("홍길동", "test@example.com");
         authorRepository.save(author);
@@ -271,10 +272,10 @@ class BookServiceTest {
         condition.setSortCriteria(SortCriteria.PUBLICATION_DATE_ASC);
 
         //when
-        PageResponse<GetBookResponse> response =  bookService.readBooks(condition, 0);
+        PageResponse<GetBookResponse> response = bookService.readBooks(condition, 0);
 
         //then
-        for(int i = 1; i <= 2; i++){
+        for (int i = 1; i <= 2; i++) {
             GetBookResponse bookResponse = response.getData().get(i - 1);
 
             assertEquals(bookResponse.getTitle(), "테스트 타이틀" + i);
@@ -291,10 +292,10 @@ class BookServiceTest {
         condition.setSortCriteria(SortCriteria.PUBLICATION_DATE_DESC);
 
         //when
-        PageResponse<GetBookResponse> response =  bookService.readBooks(condition, 0);
+        PageResponse<GetBookResponse> response = bookService.readBooks(condition, 0);
 
         //then
-        for(int i = 2; i >= 1; i--){
+        for (int i = 2; i >= 1; i--) {
             GetBookResponse bookResponse = response.getData().get(2 - i);
 
             assertEquals(bookResponse.getTitle(), "테스트 타이틀" + i);
@@ -311,10 +312,10 @@ class BookServiceTest {
         condition.setSortCriteria(SortCriteria.TITLE_ASC);
 
         //when
-        PageResponse<GetBookResponse> response =  bookService.readBooks(condition, 0);
+        PageResponse<GetBookResponse> response = bookService.readBooks(condition, 0);
 
         //then
-        for(int i = 1; i <= 2; i++){
+        for (int i = 1; i <= 2; i++) {
             GetBookResponse bookResponse = response.getData().get(i - 1);
 
             assertEquals(bookResponse.getTitle(), "테스트 타이틀" + i);
@@ -331,10 +332,10 @@ class BookServiceTest {
         condition.setSortCriteria(SortCriteria.TITLE_DESC);
 
         //when
-        PageResponse<GetBookResponse> response =  bookService.readBooks(condition, 0);
+        PageResponse<GetBookResponse> response = bookService.readBooks(condition, 0);
 
         //then
-        for(int i = 2; i >= 1; i--){
+        for (int i = 2; i >= 1; i--) {
             GetBookResponse bookResponse = response.getData().get(2 - i);
 
             assertEquals(bookResponse.getTitle(), "테스트 타이틀" + i);
@@ -368,7 +369,38 @@ class BookServiceTest {
         assertThat(response.getData()).isEmpty();
     }
 
-    private void saveTestFixture(){
+    @Test
+    @DisplayName("Book Id가 존재한다면, 도서 상세 조회에 성공한다.")
+    void readBookDetail_whenExistsBook_thenSuccess() throws Exception {
+        //given
+        Author author = Author.of("홍길동", "test@example.com");
+        authorRepository.save(author);
+
+        Book book = Book.of(
+                "테스트 타이틀",
+                "테스트 설명",
+                "1234567890",
+                LocalDate.now(),
+                author
+        );
+        bookRepository.save(book);
+
+        //when
+        GetBookDetailResponse response = bookService.readBookDetail(1L);
+
+        //then
+        assertEquals("테스트 타이틀", response.getTitle());
+        assertEquals("1234567890", response.getIsbn());
+    }
+
+    @Test
+    @DisplayName("Book Id가 존재하지 않는다면, 도서 상세 조회에 실패한다.")
+    void readBookDetail_whenNotFoundBook_thenFail() throws Exception {
+        //when & then
+        assertThrows(BookException.class, () -> bookService.readBookDetail(1L));
+    }
+
+    private void saveTestFixture() {
         Author author = Author.of("홍길동", "test@example.com");
         authorRepository.save(author);
 
