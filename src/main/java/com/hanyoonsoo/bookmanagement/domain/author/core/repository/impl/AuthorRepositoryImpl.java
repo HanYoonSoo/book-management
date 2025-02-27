@@ -22,6 +22,11 @@ public class AuthorRepositoryImpl implements AuthorRepository {
     }
 
     @Override
+    public void delete(Author author) {
+        authorJpaRepository.delete(author);
+    }
+
+    @Override
     public boolean existsByEmail(String email) {
         return authorJpaRepository.existsByEmail(email);
     }

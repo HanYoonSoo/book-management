@@ -1,6 +1,7 @@
 package com.hanyoonsoo.bookmanagement.domain.author.core.dto.request;
 
 import io.swagger.v3.oas.annotations.media.Schema;
+import jakarta.validation.constraints.Email;
 import lombok.*;
 
 @Getter
@@ -13,5 +14,6 @@ public class UpdateAuthorRequest {
     private String name;
 
     @Schema(description = "저자 이메일", example = "abc@example.com", nullable = true)
+    @Email
     private String email;
 }

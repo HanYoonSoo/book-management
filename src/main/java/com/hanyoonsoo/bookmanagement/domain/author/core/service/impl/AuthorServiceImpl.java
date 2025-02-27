@@ -7,6 +7,7 @@ import com.hanyoonsoo.bookmanagement.domain.author.core.entity.Author;
 import com.hanyoonsoo.bookmanagement.domain.author.core.exception.AuthorException;
 import com.hanyoonsoo.bookmanagement.domain.author.core.repository.AuthorRepository;
 import com.hanyoonsoo.bookmanagement.domain.author.core.service.AuthorService;
+import com.hanyoonsoo.bookmanagement.domain.book.core.repository.BookRepository;
 import com.hanyoonsoo.bookmanagement.global.common.enums.ErrorCode;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -15,11 +16,14 @@ import org.springframework.util.StringUtils;
 
 import java.util.List;
 
+import static org.springframework.util.StringUtils.*;
+
 @Service
 @RequiredArgsConstructor
 public class AuthorServiceImpl implements AuthorService {
 
     private final AuthorRepository authorRepository;
+    private final BookRepository bookRepository;
 
     @Override
     @Transactional
@@ -35,12 +39,25 @@ public class AuthorServiceImpl implements AuthorService {
     public void update(UpdateAuthorRequest request, Long authorId) {
         Author author = validateExistsAuthor(authorId);
 
-        if(StringUtils.hasText(request.getName())) author.modifyName(request.getName());
+        if(hasText(request.getName())) author.modifyName(request.getName());
 
-        if(StringUtils.hasText(request.getEmail())){
+        if(hasText(request.getEmail())){
             validateDuplicatedEmail(request.getEmail());
             author.modifyEmail(request.getEmail());
         }
+    }
+
+    /**
+     * 저자, 도서 삭제 과정에서 Soft Delete를 활용.
+     * 저자 관련 도서 정보 우선 삭제 후, 저자 삭제
+     */
+    @Override
+    @Transactional
+    public void delete(Long authorId) {
+        Author author = validateExistsAuthor(authorId);
+
+        bookRepository.deleteByAuthorId(authorId);
+        authorRepository.delete(author);
     }
 
     @Override

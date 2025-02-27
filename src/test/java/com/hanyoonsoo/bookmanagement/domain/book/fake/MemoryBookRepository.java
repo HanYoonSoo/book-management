@@ -76,6 +76,13 @@ public class MemoryBookRepository implements BookRepository {
         return new PageImpl<>(pagedList, pageable, total);
     }
 
+    @Override
+    public void deleteByAuthorId(Long authorId) {
+        books.entrySet().removeIf(entry ->
+                entry.getValue().getAuthor().getId().equals(authorId)
+        );
+    }
+
     private boolean isNullOrBlank(String s) {
         return s == null || s.isBlank();
     }

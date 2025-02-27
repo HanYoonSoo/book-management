@@ -39,6 +39,11 @@ public class BookRepositoryImpl implements BookRepository {
     }
 
     @Override
+    public void deleteByAuthorId(Long authorId) {
+        bookJpaRepository.deleteByAuthorId(authorId);
+    }
+
+    @Override
     public Page<Book> findPagedBooksByCondition(GetBooksCondition condition, Pageable pageable) {
         return bookJpaRepository.findPagedBooksByCondition(condition, pageable);
     }

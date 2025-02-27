@@ -8,6 +8,8 @@ public interface AuthorRepository {
 
     void save(Author author);
 
+    void delete(Author author);
+
     boolean existsByEmail(String email);
 
     Author findByIdOrElseThrow(Long authorId);

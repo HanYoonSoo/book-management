@@ -59,11 +59,31 @@ class AuthorControllerTest {
     }
 
     @Test
+    @DisplayName("필수값이 전달되지 않았다면, 400 상태코드를 전달 받는다.")
+    void create_whenBlankRequiredFields_thenReturnStatus400() throws Exception {
+        //given
+        CreateAuthorRequest request = CreateAuthorRequest.builder().build();
+
+        String requestBody = objectMapper.writeValueAsString(request);
+
+        doNothing()
+                .when(authorService)
+                .create(any());
+
+        //when & then
+        mockMvc.perform(post("/authors")
+                        .contentType("application/json")
+                        .content(requestBody))
+                .andDo(print())
+                .andExpect(status().isBadRequest());
+    }
+
+    @Test
     @DisplayName("저자 수정에 성공하면 200 상태코드를 전달 받는다.")
     void update_whenSuccess_thenReturnStatus200() throws Exception {
         //given
         UpdateAuthorRequest request = UpdateAuthorRequest.builder()
-                .name("홍길도수정")
+                .name("홍길동수정")
                 .email("test-update@example.com")
                 .build();
 
@@ -79,6 +99,29 @@ class AuthorControllerTest {
                 .content(requestBody))
                 .andDo(print())
                 .andExpect(status().isOk());
+    }
+
+    @Test
+    @DisplayName("이메일 형식이 잘못되었다면, 400 상태코드를 전달 받는다.")
+    void update_whenNotValidEmail_thenReturnStatus400() throws Exception {
+        //given
+        UpdateAuthorRequest request = UpdateAuthorRequest.builder()
+                .name("홍길동수정")
+                .email("test-update#example.com")
+                .build();
+
+        String requestBody = objectMapper.writeValueAsString(request);
+
+        doNothing()
+                .when(authorService)
+                .update(any(), any());
+
+        //when & then
+        mockMvc.perform(patch("/authors/1")
+                        .contentType("application/json")
+                        .content(requestBody))
+                .andDo(print())
+                .andExpect(status().isBadRequest());
     }
 
     @Test

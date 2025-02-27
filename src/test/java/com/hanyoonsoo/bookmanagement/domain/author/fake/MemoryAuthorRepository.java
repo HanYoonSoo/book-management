@@ -20,6 +20,13 @@ public class MemoryAuthorRepository implements AuthorRepository {
     }
 
     @Override
+    public void delete(Author author) {
+        authors.entrySet().removeIf(entry ->
+                entry.getValue().getId().equals(author.getId())
+        );
+    }
+
+    @Override
     public boolean existsByEmail(String email) {
         return authors.values().stream()
                 .anyMatch(author -> author.getEmail().equals(email));
