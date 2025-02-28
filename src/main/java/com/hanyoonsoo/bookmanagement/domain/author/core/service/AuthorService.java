@@ -1,5 +1,6 @@
 package com.hanyoonsoo.bookmanagement.domain.author.core.service;
 
+import com.hanyoonsoo.bookmanagement.domain.author.core.dto.response.GetAuthorDetailResponse;
 import com.hanyoonsoo.bookmanagement.domain.author.core.dto.response.GetAuthorResponse;
 import com.hanyoonsoo.bookmanagement.domain.author.core.dto.request.CreateAuthorRequest;
 import com.hanyoonsoo.bookmanagement.domain.author.core.dto.request.UpdateAuthorRequest;
@@ -17,7 +18,7 @@ public interface AuthorService {
 
     List<GetAuthorResponse> readAuthors();
 
-    GetAuthorResponse readAuthorDetail(Long authorId);
+    GetAuthorDetailResponse readAuthorDetail(Long authorId);
 
     Author validateExistsAuthor(Long authorId);
 }

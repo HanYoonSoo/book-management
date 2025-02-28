@@ -2,6 +2,7 @@ package com.hanyoonsoo.bookmanagement.domain.author.core.service.impl;
 
 import com.hanyoonsoo.bookmanagement.domain.author.core.dto.request.CreateAuthorRequest;
 import com.hanyoonsoo.bookmanagement.domain.author.core.dto.request.UpdateAuthorRequest;
+import com.hanyoonsoo.bookmanagement.domain.author.core.dto.response.GetAuthorDetailResponse;
 import com.hanyoonsoo.bookmanagement.domain.author.core.dto.response.GetAuthorResponse;
 import com.hanyoonsoo.bookmanagement.domain.author.core.entity.Author;
 import com.hanyoonsoo.bookmanagement.domain.author.core.exception.AuthorException;
@@ -74,10 +75,10 @@ public class AuthorServiceImpl implements AuthorService {
 
     @Override
     @Transactional(readOnly = true)
-    public GetAuthorResponse readAuthorDetail(Long authorId) {
+    public GetAuthorDetailResponse readAuthorDetail(Long authorId) {
         Author author = validateExistsAuthor(authorId);
 
-        return GetAuthorResponse.from(author);
+        return GetAuthorDetailResponse.from(author);
     }
 
     @Override
