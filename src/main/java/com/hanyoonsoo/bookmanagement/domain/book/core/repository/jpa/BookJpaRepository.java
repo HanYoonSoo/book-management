@@ -16,6 +16,8 @@ public interface BookJpaRepository extends JpaRepository<Book, Long>, CustomBook
     Optional<Book> findByIdWithAuthor(Long bookId);
 
     @Modifying
-    @Query("update Book b set b.deletedAt = CURRENT_TIMESTAMP where b.author.id = ?1")
+    @Query("update Book b set b.deletedAt = CURRENT_TIMESTAMP, " +
+            "b.isbn = concat('deleted_', function('uuid')) where b.author.id = ?1"
+    )
     void deleteByAuthorId(Long authorId);
 }

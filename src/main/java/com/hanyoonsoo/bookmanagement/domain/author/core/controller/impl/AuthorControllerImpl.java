@@ -3,6 +3,7 @@ package com.hanyoonsoo.bookmanagement.domain.author.core.controller.impl;
 import com.hanyoonsoo.bookmanagement.domain.author.core.controller.AuthorController;
 import com.hanyoonsoo.bookmanagement.domain.author.core.dto.request.CreateAuthorRequest;
 import com.hanyoonsoo.bookmanagement.domain.author.core.dto.request.UpdateAuthorRequest;
+import com.hanyoonsoo.bookmanagement.domain.author.core.dto.response.GetAuthorDetailResponse;
 import com.hanyoonsoo.bookmanagement.domain.author.core.dto.response.GetAuthorResponse;
 import com.hanyoonsoo.bookmanagement.domain.author.core.service.AuthorService;
 import com.hanyoonsoo.bookmanagement.global.common.dto.ApiResponse;
@@ -54,8 +55,8 @@ public class AuthorControllerImpl implements AuthorController {
 
     @Override
     @GetMapping("/authors/{authorId}")
-    public ApiResponse<GetAuthorResponse> readAuthorDetail(@PathVariable Long authorId) {
-        GetAuthorResponse response = authorService.readAuthorDetail(authorId);
+    public ApiResponse<GetAuthorDetailResponse> readAuthorDetail(@PathVariable Long authorId) {
+        GetAuthorDetailResponse response = authorService.readAuthorDetail(authorId);
 
         return ApiResponse.ok(response);
     }

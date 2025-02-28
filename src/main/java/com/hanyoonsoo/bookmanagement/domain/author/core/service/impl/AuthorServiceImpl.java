@@ -2,6 +2,7 @@ package com.hanyoonsoo.bookmanagement.domain.author.core.service.impl;
 
 import com.hanyoonsoo.bookmanagement.domain.author.core.dto.request.CreateAuthorRequest;
 import com.hanyoonsoo.bookmanagement.domain.author.core.dto.request.UpdateAuthorRequest;
+import com.hanyoonsoo.bookmanagement.domain.author.core.dto.response.GetAuthorDetailResponse;
 import com.hanyoonsoo.bookmanagement.domain.author.core.dto.response.GetAuthorResponse;
 import com.hanyoonsoo.bookmanagement.domain.author.core.entity.Author;
 import com.hanyoonsoo.bookmanagement.domain.author.core.exception.AuthorException;
@@ -50,6 +51,8 @@ public class AuthorServiceImpl implements AuthorService {
     /**
      * 저자, 도서 삭제 과정에서 Soft Delete를 활용.
      * 저자 관련 도서 정보 우선 삭제 후, 저자 삭제
+     * 저자 삭제 시 email값: deleted_(UUID)
+     * 도서 삭제 시 isbn값: deleted_(UUID)
      */
     @Override
     @Transactional
@@ -72,10 +75,10 @@ public class AuthorServiceImpl implements AuthorService {
 
     @Override
     @Transactional(readOnly = true)
-    public GetAuthorResponse readAuthorDetail(Long authorId) {
+    public GetAuthorDetailResponse readAuthorDetail(Long authorId) {
         Author author = validateExistsAuthor(authorId);
 
-        return GetAuthorResponse.from(author);
+        return GetAuthorDetailResponse.from(author);
     }
 
     @Override

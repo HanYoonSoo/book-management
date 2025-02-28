@@ -3,6 +3,7 @@ package com.hanyoonsoo.bookmanagement.domain.author.core.controller;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.hanyoonsoo.bookmanagement.domain.author.core.dto.request.CreateAuthorRequest;
 import com.hanyoonsoo.bookmanagement.domain.author.core.dto.request.UpdateAuthorRequest;
+import com.hanyoonsoo.bookmanagement.domain.author.core.dto.response.GetAuthorDetailResponse;
 import com.hanyoonsoo.bookmanagement.domain.author.core.dto.response.GetAuthorResponse;
 import com.hanyoonsoo.bookmanagement.domain.author.core.service.AuthorService;
 import org.junit.jupiter.api.DisplayName;
@@ -161,7 +162,7 @@ class AuthorControllerTest {
     @DisplayName("저자 상세 조회에 성공하면 200 상태코드를 전달 받는다.")
     void readAuthorDetail_whenSuccess_thenReturnStatus200() throws Exception {
         //given
-        GetAuthorResponse response = GetAuthorResponse.builder()
+        GetAuthorDetailResponse response = GetAuthorDetailResponse.builder()
                 .authorId(1L)
                 .name("홍길동1")
                 .email("test1@example.com")
