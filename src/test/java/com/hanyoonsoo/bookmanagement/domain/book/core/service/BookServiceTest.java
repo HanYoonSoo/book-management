@@ -207,7 +207,7 @@ class BookServiceTest {
         bookRepository.save(book);
 
         //when
-        PageResponse<GetBookResponse> response = bookService.readBooks(null, 0);
+        PageResponse<GetBookResponse> response = bookService.readBooks(new GetBooksCondition(), 0);
 
         //then
         assertThat(response.getData()).isNotNull();
