@@ -2,6 +2,7 @@ package com.hanyoonsoo.bookmanagement.domain.author.core.controller;
 
 import com.hanyoonsoo.bookmanagement.domain.author.core.dto.request.CreateAuthorRequest;
 import com.hanyoonsoo.bookmanagement.domain.author.core.dto.request.UpdateAuthorRequest;
+import com.hanyoonsoo.bookmanagement.domain.author.core.dto.response.GetAuthorDetailResponse;
 import com.hanyoonsoo.bookmanagement.domain.author.core.dto.response.GetAuthorResponse;
 import com.hanyoonsoo.bookmanagement.global.common.dto.ApiResponse;
 import io.swagger.v3.oas.annotations.Operation;
@@ -79,7 +80,7 @@ public interface AuthorController {
 
     @Operation(
             summary = "Author 상세 정보 조회",
-            description = "Author 상세 정보 조회 API, 저자의 상세 정보를 반환합니다. " +
+            description = "Author 상세 정보 조회 API, 저자의 상세 정보(연관 도서 포함)를 반환합니다. " +
                     "존재하지 않는 Author Id일 경우 404 에러를 반환합니다. "
     )
     @io.swagger.v3.oas.annotations.responses.ApiResponses(
@@ -92,6 +93,6 @@ public interface AuthorController {
                     )
             }
     )
-    ApiResponse<GetAuthorResponse> readAuthorDetail(Long authorId);
+    ApiResponse<GetAuthorDetailResponse> readAuthorDetail(Long authorId);
 
 }
