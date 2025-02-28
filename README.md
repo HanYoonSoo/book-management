@@ -6,7 +6,8 @@
 삭제 시 저자 이메일, 도서 isbn은 UUID로 초기화 됩니다.
 
 ## 설치 및 실행 방법
-1. 폴더 생성(윈도우), 디렉토리 생성(macOS)
+윈도우 작업 시 Git Bash를 사용해서 작업해주세요. UNIX 기반 운영체제의 경우 Terminal를 사용해서 작업해주세요.
+1. 폴더 생성(윈도우), 디렉토리 생성(UNIX 기반)
 2. git clone https://github.com/HanYoonSoo/book-management.git 명령어 수행
 3. cd book-management
 4. chmod u+x gradlew
@@ -22,9 +23,17 @@ Postman API 사용 예시 경로: https://documenter.getpostman.com/view/4012169
 
 실행 방법 대로 실행 시킨 이후, 아래 경로로 접속<br>
 Swagger 접속 경로: http://localhost:8080/swagger-ui/index.html#
-
+ 
 ## 기타 주의 사항
 애플리케이션 포트(8080)이 이미 실행중인 경우 프로젝트가 정상적으로 실행되지 않을 수 있습니다.<br>
 git이 설치되어 있는 환경이어야 합니다.<br>
 Java가 설치되어 있는 환경이어야 합니다.<br>
 
+## 개발 환경
+- Java 17
+- Spring Boot 3.4.3
+- Gradle 8.12.1
+- JPA
+- QueryDSL
+- H2
+- Flyway
