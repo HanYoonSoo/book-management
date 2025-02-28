@@ -13,7 +13,7 @@ import java.time.LocalDateTime;
 @Entity
 @Builder
 @Getter
-@SQLDelete(sql = "UPDATE book SET deleted_at = CURRENT_TIMESTAMP WHERE id = ?")
+@SQLDelete(sql = "UPDATE book SET deleted_at = CURRENT_TIMESTAMP, isbn = CONCAT('deleted_', UUID()) WHERE id = ?")
 @SQLRestriction("deleted_at is null")
 @Table(name = "book")
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
@@ -30,7 +30,7 @@ public class Book extends BaseTimeEntity {
     @Column(name = "description", length = 1000)
     private String description;
 
-    @Column(name = "isbn", nullable = false, length = 10, unique = true)
+    @Column(name = "isbn", nullable = false, length = 50, unique = true)
     private String isbn;
 
     @Column(name = "publication_date")
