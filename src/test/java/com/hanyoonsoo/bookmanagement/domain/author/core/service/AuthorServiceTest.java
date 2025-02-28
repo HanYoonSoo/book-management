@@ -2,6 +2,7 @@ package com.hanyoonsoo.bookmanagement.domain.author.core.service;
 
 import com.hanyoonsoo.bookmanagement.domain.author.core.dto.request.CreateAuthorRequest;
 import com.hanyoonsoo.bookmanagement.domain.author.core.dto.request.UpdateAuthorRequest;
+import com.hanyoonsoo.bookmanagement.domain.author.core.dto.response.GetAuthorDetailResponse;
 import com.hanyoonsoo.bookmanagement.domain.author.core.dto.response.GetAuthorResponse;
 import com.hanyoonsoo.bookmanagement.domain.author.core.entity.Author;
 import com.hanyoonsoo.bookmanagement.domain.author.core.exception.AuthorException;
@@ -155,7 +156,7 @@ class AuthorServiceTest {
         authorRepository.save(author);
 
         //when
-        GetAuthorResponse response = authorService.readAuthorDetail(1L);
+        GetAuthorDetailResponse response = authorService.readAuthorDetail(1L);
 
         //then
         assertEquals(author.getEmail(), response.getEmail());
