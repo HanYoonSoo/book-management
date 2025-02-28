@@ -1,7 +1,7 @@
 # book-management-system
 
-## 저자 삭제 관련
-저자 삭제 시 Soft Delete로 삭제되며,<br> 
+## 저자 & 도서 삭제 관련
+저자 삭제 시 Soft Delete로 삭제됩니다.<br> 
 해당 저자의 도서 또한 Soft Delete로 DB에서 관리됩니다.<br>
 삭제 시 저자 이메일, 도서 isbn은 UUID로 초기화 됩니다.
 
