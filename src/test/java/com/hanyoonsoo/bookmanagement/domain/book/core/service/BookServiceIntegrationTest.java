@@ -1,11 +1,9 @@
 package com.hanyoonsoo.bookmanagement.domain.book.core.service;
 
+import com.hanyoonsoo.bookmanagement.IntegrationSupporter;
 import com.hanyoonsoo.bookmanagement.domain.author.core.entity.Author;
 import com.hanyoonsoo.bookmanagement.domain.author.core.exception.AuthorException;
 import com.hanyoonsoo.bookmanagement.domain.author.core.repository.AuthorRepository;
-import com.hanyoonsoo.bookmanagement.domain.author.core.service.AuthorService;
-import com.hanyoonsoo.bookmanagement.domain.author.core.service.impl.AuthorServiceImpl;
-import com.hanyoonsoo.bookmanagement.domain.author.fake.MemoryAuthorRepository;
 import com.hanyoonsoo.bookmanagement.domain.author.fixture.AuthorFixture;
 import com.hanyoonsoo.bookmanagement.domain.book.core.dto.SortCriteria;
 import com.hanyoonsoo.bookmanagement.domain.book.core.dto.request.CreateBookRequest;
@@ -16,34 +14,26 @@ import com.hanyoonsoo.bookmanagement.domain.book.core.dto.response.GetBookRespon
 import com.hanyoonsoo.bookmanagement.domain.book.core.entity.Book;
 import com.hanyoonsoo.bookmanagement.domain.book.core.exception.BookException;
 import com.hanyoonsoo.bookmanagement.domain.book.core.repository.BookRepository;
-import com.hanyoonsoo.bookmanagement.domain.book.core.service.impl.BookServiceImpl;
-import com.hanyoonsoo.bookmanagement.domain.book.fake.MemoryBookRepository;
 import com.hanyoonsoo.bookmanagement.domain.book.fixture.BookFixture;
 import com.hanyoonsoo.bookmanagement.global.common.dto.PageResponse;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDate;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.*;
 
-class BookServiceTest {
+public class BookServiceIntegrationTest extends IntegrationSupporter {
 
-    private BookService bookService;
+    // Service Bean
+    @Autowired private BookService bookService;
 
-    private AuthorRepository authorRepository;
-    private BookRepository bookRepository;
-
-    @BeforeEach
-    void setUp() {
-        authorRepository = new MemoryAuthorRepository();
-        bookRepository = new MemoryBookRepository();
-
-        AuthorService authorService = new AuthorServiceImpl(authorRepository, bookRepository);
-        bookService = new BookServiceImpl(authorService, bookRepository);
-    }
+    // Repository Bean
+    @Autowired private AuthorRepository authorRepository;
+    @Autowired private BookRepository bookRepository;
 
     @Test
     @DisplayName("존재하는 저자이며 isbn이 중복되지 않았다면, 도서 생성에 성공한다.")
@@ -164,17 +154,18 @@ class BookServiceTest {
 
     @Test
     @DisplayName("존재하는 도서라면, 삭제에 성공한다.")
+    @Transactional
     void delete_whenExistsBook_thenSuccess() throws Exception {
         //given
         Author author = AuthorFixture.createAuthor();
         authorRepository.save(author);
 
         Book book = Book.builder()
-                .id(1L)
                 .title("테스트 타이틀")
                 .description("테스트 설명")
                 .isbn("1234567890")
                 .publicationDate(LocalDate.now())
+                .author(author)
                 .build();
         bookRepository.save(book);
 
