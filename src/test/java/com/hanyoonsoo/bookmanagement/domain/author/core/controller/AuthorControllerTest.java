@@ -38,7 +38,7 @@ class AuthorControllerTest {
 
     @Test
     @DisplayName("저자 생성에 성공하면 201 상태코드를 전달 받는다.")
-    void create_whenSuccess_thenReturnStatus201() throws Exception {
+    void createAuthor_whenSuccess_thenReturnStatus201() throws Exception {
         //given
         CreateAuthorRequest request = CreateAuthorRequest.builder()
                 .name("홍길동")
@@ -61,7 +61,7 @@ class AuthorControllerTest {
 
     @Test
     @DisplayName("필수값이 전달되지 않았다면, 400 상태코드를 전달 받는다.")
-    void create_whenBlankRequiredFields_thenReturnStatus400() throws Exception {
+    void createAuthor_whenBlankRequiredFields_thenReturnStatus400() throws Exception {
         //given
         CreateAuthorRequest request = CreateAuthorRequest.builder().build();
 
@@ -81,7 +81,7 @@ class AuthorControllerTest {
 
     @Test
     @DisplayName("저자 수정에 성공하면 200 상태코드를 전달 받는다.")
-    void update_whenSuccess_thenReturnStatus200() throws Exception {
+    void updateAuthor_whenSuccess_thenReturnStatus200() throws Exception {
         //given
         UpdateAuthorRequest request = UpdateAuthorRequest.builder()
                 .name("홍길동수정")
@@ -104,7 +104,7 @@ class AuthorControllerTest {
 
     @Test
     @DisplayName("이메일 형식이 잘못되었다면, 400 상태코드를 전달 받는다.")
-    void update_whenNotValidEmail_thenReturnStatus400() throws Exception {
+    void updateAuthor_whenNotValidEmail_thenReturnStatus400() throws Exception {
         //given
         UpdateAuthorRequest request = UpdateAuthorRequest.builder()
                 .name("홍길동수정")
@@ -127,7 +127,7 @@ class AuthorControllerTest {
 
     @Test
     @DisplayName("저자 목록 조회에 성공하면 200 상태코드를 전달 받는다.")
-    void readAuthors_whenSuccess_thenReturnStatus200() throws Exception {
+    void getAuthors_whenSuccess_thenReturnStatus200() throws Exception {
         //given
         List<GetAuthorResponse> response = List.of(
                 GetAuthorResponse.builder()
@@ -160,7 +160,7 @@ class AuthorControllerTest {
 
     @Test
     @DisplayName("저자 상세 조회에 성공하면 200 상태코드를 전달 받는다.")
-    void readAuthorDetail_whenSuccess_thenReturnStatus200() throws Exception {
+    void getAuthorDetails_whenSuccess_thenReturnStatus200() throws Exception {
         //given
         GetAuthorDetailResponse response = GetAuthorDetailResponse.builder()
                 .authorId(1L)
