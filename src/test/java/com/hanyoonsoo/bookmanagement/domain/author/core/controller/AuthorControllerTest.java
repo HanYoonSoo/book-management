@@ -49,7 +49,7 @@ class AuthorControllerTest {
 
         doNothing()
                 .when(authorService)
-                .create(any());
+                .createAuthor(any());
 
         //when & then
         mockMvc.perform(post("/authors")
@@ -69,7 +69,7 @@ class AuthorControllerTest {
 
         doNothing()
                 .when(authorService)
-                .create(any());
+                .createAuthor(any());
 
         //when & then
         mockMvc.perform(post("/authors")
@@ -92,7 +92,7 @@ class AuthorControllerTest {
 
         doNothing()
                 .when(authorService)
-                .update(any(), any());
+                .updateAuthor(any(), any());
 
         //when & then
         mockMvc.perform(patch("/authors/1")
@@ -115,7 +115,7 @@ class AuthorControllerTest {
 
         doNothing()
                 .when(authorService)
-                .update(any(), any());
+                .updateAuthor(any(), any());
 
         //when & then
         mockMvc.perform(patch("/authors/1")
@@ -142,7 +142,7 @@ class AuthorControllerTest {
                         .build()
         );
 
-        given(authorService.readAuthors()).willReturn(response);
+        given(authorService.getAuthors()).willReturn(response);
 
         //when & then
         mockMvc.perform(get("/authors"))
@@ -168,7 +168,7 @@ class AuthorControllerTest {
                 .email("test1@example.com")
                 .build();
 
-        given(authorService.readAuthorDetail(1L)).willReturn(response);
+        given(authorService.getAuthorDetails(1L)).willReturn(response);
 
         //when & then
         mockMvc.perform(get("/authors/1"))
