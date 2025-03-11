@@ -35,7 +35,7 @@ public class AuthorServiceIntegrationTest extends IntegrationSupporter {
                 .build();
 
         // when & then
-        assertDoesNotThrow(() -> authorService.create(request));
+        assertDoesNotThrow(() -> authorService.createAuthor(request));
     }
 
     @Test
@@ -51,7 +51,7 @@ public class AuthorServiceIntegrationTest extends IntegrationSupporter {
                 .build();
 
         // when & then
-        assertThrows(AuthorException.class, () -> authorService.create(request));
+        assertThrows(AuthorException.class, () -> authorService.createAuthor(request));
     }
 
     @Test
@@ -68,7 +68,7 @@ public class AuthorServiceIntegrationTest extends IntegrationSupporter {
                 .build();
 
         //when
-        authorService.update(request, 1L);
+        authorService.updateAuthor(request, 1L);
 
         //then
         Author findAuthor = authorRepository.findByIdOrElseThrow(1L);
@@ -93,7 +93,7 @@ public class AuthorServiceIntegrationTest extends IntegrationSupporter {
                 .build();
 
         //when & then
-        assertThrows(AuthorException.class, () -> authorService.update(request, 1L));
+        assertThrows(AuthorException.class, () -> authorService.updateAuthor(request, 1L));
     }
 
     @Test
@@ -113,7 +113,7 @@ public class AuthorServiceIntegrationTest extends IntegrationSupporter {
                 .build();
 
         //when & then
-        assertThrows(AuthorException.class, () -> authorService.update(request, 1L));
+        assertThrows(AuthorException.class, () -> authorService.updateAuthor(request, 1L));
     }
 
     @Test
@@ -129,7 +129,7 @@ public class AuthorServiceIntegrationTest extends IntegrationSupporter {
         authorRepository.save(author3);
 
         //when
-        List<GetAuthorResponse> authors = authorService.readAuthors();
+        List<GetAuthorResponse> authors = authorService.getAuthors();
 
         //then
         for(int i = 0; i < 3; i++){
@@ -147,7 +147,7 @@ public class AuthorServiceIntegrationTest extends IntegrationSupporter {
         authorRepository.save(author);
 
         //when
-        GetAuthorDetailResponse response = authorService.readAuthorDetail(1L);
+        GetAuthorDetailResponse response = authorService.getAuthorDetails(1L);
 
         //then
         assertEquals(author.getEmail(), response.getEmail());
@@ -166,7 +166,7 @@ public class AuthorServiceIntegrationTest extends IntegrationSupporter {
         authorRepository.save(author);
 
         //when
-        authorService.delete(1L);
+        authorService.deleteAuthor(1L);
 
         //then
         assertThrows(AuthorException.class, () -> authorRepository.findByIdOrElseThrow(1L));

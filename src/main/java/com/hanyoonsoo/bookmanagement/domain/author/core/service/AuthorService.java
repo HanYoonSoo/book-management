@@ -10,15 +10,15 @@ import java.util.List;
 
 public interface AuthorService {
 
-    void create(CreateAuthorRequest request);
+    void createAuthor(CreateAuthorRequest request);
 
-    void update(UpdateAuthorRequest request, Long authorId);
+    void updateAuthor(UpdateAuthorRequest request, Long authorId);
 
-    void delete(Long authorId);
+    void deleteAuthor(Long authorId);
 
-    List<GetAuthorResponse> readAuthors();
+    List<GetAuthorResponse> getAuthors();
 
-    GetAuthorDetailResponse readAuthorDetail(Long authorId);
+    GetAuthorDetailResponse getAuthorDetails(Long authorId);
 
     Author validateExistsAuthor(Long authorId);
 }

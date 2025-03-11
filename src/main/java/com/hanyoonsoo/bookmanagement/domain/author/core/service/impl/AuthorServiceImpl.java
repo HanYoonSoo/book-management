@@ -28,7 +28,7 @@ public class AuthorServiceImpl implements AuthorService {
 
     @Override
     @Transactional
-    public void create(CreateAuthorRequest request) {
+    public void createAuthor(CreateAuthorRequest request) {
         validateDuplicatedEmail(request.getEmail());
 
         Author author = Author.of(request.getName(), request.getEmail());
@@ -37,7 +37,7 @@ public class AuthorServiceImpl implements AuthorService {
 
     @Override
     @Transactional
-    public void update(UpdateAuthorRequest request, Long authorId) {
+    public void updateAuthor(UpdateAuthorRequest request, Long authorId) {
         Author author = validateExistsAuthor(authorId);
 
         if(hasText(request.getName())) author.modifyName(request.getName());
@@ -56,7 +56,7 @@ public class AuthorServiceImpl implements AuthorService {
      */
     @Override
     @Transactional
-    public void delete(Long authorId) {
+    public void deleteAuthor(Long authorId) {
         Author author = validateExistsAuthor(authorId);
 
         bookRepository.deleteByAuthorId(authorId);
@@ -65,7 +65,7 @@ public class AuthorServiceImpl implements AuthorService {
 
     @Override
     @Transactional(readOnly = true)
-    public List<GetAuthorResponse> readAuthors() {
+    public List<GetAuthorResponse> getAuthors() {
         List<Author> authors = authorRepository.findAll();
 
         return authors.stream()
@@ -75,7 +75,7 @@ public class AuthorServiceImpl implements AuthorService {
 
     @Override
     @Transactional(readOnly = true)
-    public GetAuthorDetailResponse readAuthorDetail(Long authorId) {
+    public GetAuthorDetailResponse getAuthorDetails(Long authorId) {
         Author author = validateExistsAuthor(authorId);
 
         return GetAuthorDetailResponse.from(author);
