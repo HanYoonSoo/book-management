@@ -32,7 +32,7 @@ public interface BookController {
                     )
             }
     )
-    ApiResponse<Void> create(CreateBookRequest request);
+    ApiResponse<Void> createBook(CreateBookRequest request);
 
     @Operation(
             summary = "Book 수정",
@@ -53,7 +53,7 @@ public interface BookController {
                     )
             }
     )
-    ApiResponse<Void> update(UpdateBookRequest request, Long bookId);
+    ApiResponse<Void> updateBook(UpdateBookRequest request, Long bookId);
 
     @Operation(
             summary = "Book 삭제",
@@ -70,7 +70,7 @@ public interface BookController {
                     )
             }
     )
-    ApiResponse<Void> delete(Long bookId);
+    ApiResponse<Void> deleteBook(Long bookId);
 
     @Operation(
             summary = "Book 목록 조회",
@@ -82,7 +82,7 @@ public interface BookController {
     @io.swagger.v3.oas.annotations.responses.ApiResponse(
             responseCode = "200", description = "Book 목록 조회 성공"
     )
-    ApiResponse<PageResponse<GetBookResponse>> readBooks(GetBooksCondition condition, int pageNo);
+    ApiResponse<PageResponse<GetBookResponse>> getBooks(GetBooksCondition condition, int pageNo);
 
     @Operation(
             summary = "Book 상세 조회",
@@ -99,5 +99,5 @@ public interface BookController {
                     )
             }
     )
-    ApiResponse<GetBookDetailResponse> readBookDetail(Long bookId);
+    ApiResponse<GetBookDetailResponse> getBookDetails(Long bookId);
 }

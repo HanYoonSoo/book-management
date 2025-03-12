@@ -37,7 +37,7 @@ public class BookServiceIntegrationTest extends IntegrationSupporter {
 
     @Test
     @DisplayName("존재하는 저자이며 isbn이 중복되지 않았다면, 도서 생성에 성공한다.")
-    void create_whenExistsAuthorAndIsbnNotDuplicated_thenSuccess() throws Exception {
+    void createBook_whenExistsAuthorAndIsbnNotDuplicated_thenSuccess() throws Exception {
         //given
         Author author = AuthorFixture.createAuthor();
         authorRepository.save(author);
@@ -51,12 +51,12 @@ public class BookServiceIntegrationTest extends IntegrationSupporter {
                 .build();
 
         //when & then
-        assertDoesNotThrow(() -> bookService.create(request));
+        assertDoesNotThrow(() -> bookService.createBook(request));
     }
 
     @Test
     @DisplayName("관련 저자가 존재하지 않는다면, 도서 생성에 실패한다.")
-    void create_whenNotFoundAuthor_thenFail() throws Exception {
+    void createBook_whenNotFoundAuthor_thenFail() throws Exception {
         //given
         CreateBookRequest request = CreateBookRequest.builder()
                 .title("테스트 타이틀")
@@ -67,12 +67,12 @@ public class BookServiceIntegrationTest extends IntegrationSupporter {
                 .build();
 
         //when & then
-        assertThrows(AuthorException.class, () -> bookService.create(request));
+        assertThrows(AuthorException.class, () -> bookService.createBook(request));
     }
 
     @Test
     @DisplayName("isbn이 중복되었다면, 도서 생성에 실패한다.")
-    void create_whenIsbnDuplicated_thenFail() throws Exception {
+    void createBook_whenIsbnDuplicated_thenFail() throws Exception {
         //given
         Author author = AuthorFixture.createAuthor();
         authorRepository.save(author);
@@ -89,12 +89,12 @@ public class BookServiceIntegrationTest extends IntegrationSupporter {
                 .build();
 
         //when & then
-        assertThrows(BookException.class, () -> bookService.create(request));
+        assertThrows(BookException.class, () -> bookService.createBook(request));
     }
 
     @Test
     @DisplayName("존재하는 도서이며 isbn이 중복되지 않았다면, 수정에 성공한다.")
-    void update_whenExistsBookAndIsbnNotDuplicated_thenSuccess() throws Exception {
+    void updateBook_whenExistsBookAndIsbnNotDuplicated_thenSuccess() throws Exception {
         //given
         Author author = AuthorFixture.createAuthor();
         authorRepository.save(author);
@@ -110,12 +110,12 @@ public class BookServiceIntegrationTest extends IntegrationSupporter {
                 .build();
 
         //when & then
-        assertDoesNotThrow(() -> bookService.update(request, 1L));
+        assertDoesNotThrow(() -> bookService.updateBook(request, 1L));
     }
 
     @Test
     @DisplayName("존재하지 않는 도서라면, 수정에 실패한다.")
-    void update_whenNotFoundBook_thenFail() throws Exception {
+    void updateBook_whenNotFoundBook_thenFail() throws Exception {
         //given
         Author author = AuthorFixture.createAuthor();
         authorRepository.save(author);
@@ -128,12 +128,12 @@ public class BookServiceIntegrationTest extends IntegrationSupporter {
                 .build();
 
         //when & then
-        assertThrows(BookException.class, () -> bookService.update(request, 1L));
+        assertThrows(BookException.class, () -> bookService.updateBook(request, 1L));
     }
 
     @Test
     @DisplayName("isbn이 중복되었다면, 수정에 실패한다.")
-    void update_whenIsbnDuplicated_thenFail() throws Exception {
+    void updateBook_whenIsbnDuplicated_thenFail() throws Exception {
         //given
         Author author = AuthorFixture.createAuthor();
         authorRepository.save(author);
@@ -149,13 +149,13 @@ public class BookServiceIntegrationTest extends IntegrationSupporter {
                 .build();
 
         //when & then
-        assertThrows(BookException.class, () -> bookService.update(request, 1L));
+        assertThrows(BookException.class, () -> bookService.updateBook(request, 1L));
     }
 
     @Test
     @DisplayName("존재하는 도서라면, 삭제에 성공한다.")
     @Transactional
-    void delete_whenExistsBook_thenSuccess() throws Exception {
+    void deleteBook_whenExistsBook_thenSuccess() throws Exception {
         //given
         Author author = AuthorFixture.createAuthor();
         authorRepository.save(author);
@@ -170,7 +170,7 @@ public class BookServiceIntegrationTest extends IntegrationSupporter {
         bookRepository.save(book);
 
         //when
-        bookService.delete(1L);
+        bookService.deleteBook(1L);
 
         //then
         assertThrows(BookException.class, () -> bookRepository.findByIdOrElseThrow(1L));
@@ -178,18 +178,18 @@ public class BookServiceIntegrationTest extends IntegrationSupporter {
 
     @Test
     @DisplayName("존재하지 않는 도서라면, 삭제에 실패한다.")
-    void delete_whenNotFoundBook_thenFail() throws Exception {
+    void deleteBook_whenNotFoundBook_thenFail() throws Exception {
         //given
         Author author = AuthorFixture.createAuthor();
         authorRepository.save(author);
 
         //when & then
-        assertThrows(BookException.class, () -> bookService.delete(1L));
+        assertThrows(BookException.class, () -> bookService.deleteBook(1L));
     }
 
     @Test
     @DisplayName("필터링 없는 도서 Pagination 조회에 성공한다.")
-    void readBooks_whenNoFilter_thenReturnPaginatedBooksSuccess() throws Exception {
+    void getBooksWithPagination_whenNoFilter_thenReturnPaginatedBooksSuccess() throws Exception {
         //given
         Author author = AuthorFixture.createAuthor();
         authorRepository.save(author);
@@ -198,7 +198,7 @@ public class BookServiceIntegrationTest extends IntegrationSupporter {
         bookRepository.save(book);
 
         //when
-        PageResponse<GetBookResponse> response = bookService.readBooks(new GetBooksCondition(), 0);
+        PageResponse<GetBookResponse> response = bookService.getBooksWithPagination(new GetBooksCondition(), 0);
 
         //then
         assertThat(response.getData()).isNotNull();
@@ -206,7 +206,7 @@ public class BookServiceIntegrationTest extends IntegrationSupporter {
 
     @Test
     @DisplayName("필터링 있는 도서 Pagination 조회에 성공한다.")
-    void readBooks_whenFilterApplied_thenReturnPaginatedBooksSuccess() {
+    void getBooksWithPagination_whenFilterApplied_thenReturnPaginatedBooksSuccess() {
         //given
         Author author = AuthorFixture.createAuthor();
         authorRepository.save(author);
@@ -219,7 +219,7 @@ public class BookServiceIntegrationTest extends IntegrationSupporter {
         condition.setTitle("타이틀");
 
         //when
-        PageResponse<GetBookResponse> response = bookService.readBooks(condition, 0);
+        PageResponse<GetBookResponse> response = bookService.getBooksWithPagination(condition, 0);
 
         //then
         assertThat(response.getData()).isNotNull();
@@ -227,15 +227,15 @@ public class BookServiceIntegrationTest extends IntegrationSupporter {
 
     @Test
     @DisplayName("도서 출판일 오름차순 Pagination 조회에 성공한다.")
-    void readBooks_whenPublicationDateAsc_thenReturnPaginatedBooksSuccess() {
+    void getBooksWithPagination_whenPublicationDateAsc_thenReturnPaginatedBooksSuccess() {
         //given
-        saveAuthorAndBookForTest();
+        createAuthorAndBookForTest();
 
         GetBooksCondition condition = new GetBooksCondition();
         condition.setSortCriteria(SortCriteria.PUBLICATION_DATE_ASC);
 
         //when
-        PageResponse<GetBookResponse> response = bookService.readBooks(condition, 0);
+        PageResponse<GetBookResponse> response = bookService.getBooksWithPagination(condition, 0);
 
         //then
         for (int i = 1; i <= 2; i++) {
@@ -247,15 +247,15 @@ public class BookServiceIntegrationTest extends IntegrationSupporter {
 
     @Test
     @DisplayName("도서 출판일 내림차순 Pagination 조회에 성공한다.")
-    void readBooks_whenPublicationDateDesc_thenReturnPaginatedBooksSuccess() {
+    void getBooksWithPagination_whenPublicationDateDesc_thenReturnPaginatedBooksSuccess() {
         //given
-        saveAuthorAndBookForTest();
+        createAuthorAndBookForTest();
 
         GetBooksCondition condition = new GetBooksCondition();
         condition.setSortCriteria(SortCriteria.PUBLICATION_DATE_DESC);
 
         //when
-        PageResponse<GetBookResponse> response = bookService.readBooks(condition, 0);
+        PageResponse<GetBookResponse> response = bookService.getBooksWithPagination(condition, 0);
 
         //then
         for (int i = 2; i >= 1; i--) {
@@ -267,15 +267,15 @@ public class BookServiceIntegrationTest extends IntegrationSupporter {
 
     @Test
     @DisplayName("도서 타이틀 오름차순 Pagination 조회에 성공한다.")
-    void readBooks_whenTitleAsc_thenReturnPaginatedBooksSuccess() {
+    void getBooksWithPagination_whenTitleAsc_thenReturnPaginatedBooksSuccess() {
         //given
-        saveAuthorAndBookForTest();
+        createAuthorAndBookForTest();
 
         GetBooksCondition condition = new GetBooksCondition();
         condition.setSortCriteria(SortCriteria.TITLE_ASC);
 
         //when
-        PageResponse<GetBookResponse> response = bookService.readBooks(condition, 0);
+        PageResponse<GetBookResponse> response = bookService.getBooksWithPagination(condition, 0);
 
         //then
         for (int i = 1; i <= 2; i++) {
@@ -287,15 +287,15 @@ public class BookServiceIntegrationTest extends IntegrationSupporter {
 
     @Test
     @DisplayName("도서 타이틀 내림차순 Pagination 조회에 성공한다.")
-    void readBooks_whenTitleDesc_thenReturnPaginatedBooksSuccess() {
+    void getBooksWithPagination_whenTitleDesc_thenReturnPaginatedBooksSuccess() {
         //given
-        saveAuthorAndBookForTest();
+        createAuthorAndBookForTest();
 
         GetBooksCondition condition = new GetBooksCondition();
         condition.setSortCriteria(SortCriteria.TITLE_DESC);
 
         //when
-        PageResponse<GetBookResponse> response = bookService.readBooks(condition, 0);
+        PageResponse<GetBookResponse> response = bookService.getBooksWithPagination(condition, 0);
 
         //then
         for (int i = 2; i >= 1; i--) {
@@ -307,7 +307,7 @@ public class BookServiceIntegrationTest extends IntegrationSupporter {
 
     @Test
     @DisplayName("필터링에 걸리는 도서가 없다면 빈값 반환에 성공한다.")
-    void readBooks_whenFilterNoMatch_thenReturnEmptyPage() {
+    void getBooksWithPagination_whenFilterNoMatch_thenReturnEmptyPage() {
         //given
         Author author = AuthorFixture.createAuthor();
         authorRepository.save(author);
@@ -320,7 +320,7 @@ public class BookServiceIntegrationTest extends IntegrationSupporter {
         condition.setTitle("조회X");
 
         //when
-        PageResponse<GetBookResponse> response = bookService.readBooks(condition, 0);
+        PageResponse<GetBookResponse> response = bookService.getBooksWithPagination(condition, 0);
 
         //then
         assertThat(response.getData()).isEmpty();
@@ -328,7 +328,7 @@ public class BookServiceIntegrationTest extends IntegrationSupporter {
 
     @Test
     @DisplayName("Book Id가 존재한다면, 도서 상세 조회에 성공한다.")
-    void readBookDetail_whenExistsBook_thenSuccess() throws Exception {
+    void getBookDetails_whenExistsBook_thenSuccess() throws Exception {
         //given
         Author author = AuthorFixture.createAuthor();
         authorRepository.save(author);
@@ -337,7 +337,7 @@ public class BookServiceIntegrationTest extends IntegrationSupporter {
         bookRepository.save(book);
 
         //when
-        GetBookDetailResponse response = bookService.readBookDetail(1L);
+        GetBookDetailResponse response = bookService.getBookDetails(1L);
 
         //then
         assertEquals("테스트 타이틀", response.getTitle());
@@ -346,12 +346,12 @@ public class BookServiceIntegrationTest extends IntegrationSupporter {
 
     @Test
     @DisplayName("Book Id가 존재하지 않는다면, 도서 상세 조회에 실패한다.")
-    void readBookDetail_whenNotFoundBook_thenFail() throws Exception {
+    void getBookDetails_whenNotFoundBook_thenFail() throws Exception {
         //when & then
-        assertThrows(BookException.class, () -> bookService.readBookDetail(1L));
+        assertThrows(BookException.class, () -> bookService.getBookDetails(1L));
     }
 
-    private void saveAuthorAndBookForTest() {
+    private void createAuthorAndBookForTest() {
         Author author = AuthorFixture.createAuthor();
         authorRepository.save(author);
 

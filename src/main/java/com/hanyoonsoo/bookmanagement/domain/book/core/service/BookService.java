@@ -9,13 +9,13 @@ import com.hanyoonsoo.bookmanagement.global.common.dto.PageResponse;
 
 public interface BookService {
 
-    void create(CreateBookRequest request);
+    void createBook(CreateBookRequest request);
 
-    void update(UpdateBookRequest request, Long bookId);
+    void updateBook(UpdateBookRequest request, Long bookId);
 
-    void delete(Long bookId);
+    void deleteBook(Long bookId);
 
-    PageResponse<GetBookResponse> readBooks(GetBooksCondition condition, int pageNo);
+    PageResponse<GetBookResponse> getBooksWithPagination(GetBooksCondition condition, int pageNo);
 
-    GetBookDetailResponse readBookDetail(Long bookId);
+    GetBookDetailResponse getBookDetails(Long bookId);
 }

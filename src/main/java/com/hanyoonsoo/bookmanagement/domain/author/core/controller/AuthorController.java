@@ -28,7 +28,7 @@ public interface AuthorController {
                     )
             }
     )
-    ApiResponse<Void> create(CreateAuthorRequest request);
+    ApiResponse<Void> createAuthor(CreateAuthorRequest request);
 
     @Operation(
             summary = "Author 수정",
@@ -50,7 +50,7 @@ public interface AuthorController {
                     )
             }
     )
-    ApiResponse<Void> update(UpdateAuthorRequest request, Long authorId);
+    ApiResponse<Void> updateAuthor(UpdateAuthorRequest request, Long authorId);
 
     @Operation(
             summary = "Author 삭제",
@@ -67,7 +67,7 @@ public interface AuthorController {
                     )
             }
     )
-    ApiResponse<Void> delete(Long authorId);
+    ApiResponse<Void> deleteAuthor(Long authorId);
 
     @Operation(
             summary = "Author 목록 조회",
@@ -76,7 +76,7 @@ public interface AuthorController {
     @io.swagger.v3.oas.annotations.responses.ApiResponse(
             responseCode = "200", description = "Author 목록 조회 성공"
     )
-    ApiResponse<List<GetAuthorResponse>> readAuthors();
+    ApiResponse<List<GetAuthorResponse>> getAuthors();
 
     @Operation(
             summary = "Author 상세 정보 조회",
@@ -93,6 +93,6 @@ public interface AuthorController {
                     )
             }
     )
-    ApiResponse<GetAuthorDetailResponse> readAuthorDetail(Long authorId);
+    ApiResponse<GetAuthorDetailResponse> getAuthorDetails(Long authorId);
 
 }

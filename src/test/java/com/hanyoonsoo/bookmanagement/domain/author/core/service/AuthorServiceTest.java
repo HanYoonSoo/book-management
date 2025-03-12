@@ -36,7 +36,7 @@ class AuthorServiceTest {
 
     @Test
     @DisplayName("이메일이 중복되지 않았다면, 저자 생성에 성공한다.")
-    void create_whenEmailNotDuplicated_thenSuccess() throws Exception {
+    void createAuthor_whenEmailNotDuplicated_thenSuccess() throws Exception {
         // given
         CreateAuthorRequest request = CreateAuthorRequest.builder()
                 .name("홍길동")
@@ -44,12 +44,12 @@ class AuthorServiceTest {
                 .build();
 
         // when & then
-        assertDoesNotThrow(() -> authorService.create(request));
+        assertDoesNotThrow(() -> authorService.createAuthor(request));
     }
 
     @Test
     @DisplayName("이메일이 중복되었다면, 저자 생성에 실패한다.")
-    void create_whenEmailDuplicated_thenFail() throws Exception {
+    void createAuthor_whenEmailDuplicated_thenFail() throws Exception {
         // given
         Author author = AuthorFixture.createAuthor();
         authorRepository.save(author);
@@ -60,12 +60,12 @@ class AuthorServiceTest {
                 .build();
 
         // when & then
-        assertThrows(AuthorException.class, () -> authorService.create(request));
+        assertThrows(AuthorException.class, () -> authorService.createAuthor(request));
     }
 
     @Test
     @DisplayName("이메일이 중복되지 않고 Author Id가 존재한다면, 저자 수정에 성공한다.")
-    void update_whenEmailNotDuplicatedAndExistsAuthorId_thenSuccess() throws Exception {
+    void updateAuthor_whenEmailNotDuplicatedAndExistsAuthorId_thenSuccess() throws Exception {
         //given
         Author author = AuthorFixture.createAuthor();
 
@@ -77,7 +77,7 @@ class AuthorServiceTest {
                 .build();
 
         //when
-        authorService.update(request, 1L);
+        authorService.updateAuthor(request, 1L);
 
         //then
         Author findAuthor = authorRepository.findByIdOrElseThrow(1L);
@@ -87,7 +87,7 @@ class AuthorServiceTest {
 
     @Test
     @DisplayName("이메일이 중복되었다면, 저자 수정에 실패한다.")
-    void update_whenEmailDuplicated_thenFail() throws Exception {
+    void updateAuthor_whenEmailDuplicated_thenFail() throws Exception {
         //given
         Author author1 = Author.of("홍길동1", "test@example.com");
 
@@ -102,12 +102,12 @@ class AuthorServiceTest {
                 .build();
 
         //when & then
-        assertThrows(AuthorException.class, () -> authorService.update(request, 1L));
+        assertThrows(AuthorException.class, () -> authorService.updateAuthor(request, 1L));
     }
 
     @Test
     @DisplayName("전달받은 Id의 저자가 존재하지 않으면, 저자 수정에 실패한다.")
-    void update_whenNotFoundAuthor_thenFail() throws Exception {
+    void updateAuthor_whenNotFoundAuthor_thenFail() throws Exception {
         //given
         Author author1 = Author.of("홍길동1", "test@example.com");
 
@@ -122,12 +122,12 @@ class AuthorServiceTest {
                 .build();
 
         //when & then
-        assertThrows(AuthorException.class, () -> authorService.update(request, 1L));
+        assertThrows(AuthorException.class, () -> authorService.updateAuthor(request, 1L));
     }
 
     @Test
     @DisplayName("저자 목록 조회에 성공한다.")
-    void readAuthors_Success() throws Exception {
+    void getAuthors_Success() throws Exception {
         //given
         Author author1 = Author.of("홍길동1", "test1@example.com");
         Author author2 = Author.of("홍길동2", "test2@example.com");
@@ -138,7 +138,7 @@ class AuthorServiceTest {
         authorRepository.save(author3);
 
         //when
-        List<GetAuthorResponse> authors = authorService.readAuthors();
+        List<GetAuthorResponse> authors = authorService.getAuthors();
 
         //then
         for(int i = 0; i < 3; i++){
@@ -149,14 +149,14 @@ class AuthorServiceTest {
 
     @Test
     @DisplayName("저자 상세 조회에 성공한다.")
-    void readAuthorDetail_Success() throws Exception {
+    void getAuthorDetails_Success() throws Exception {
         //given
         Author author = AuthorFixture.createAuthor();
 
         authorRepository.save(author);
 
         //when
-        GetAuthorDetailResponse response = authorService.readAuthorDetail(1L);
+        GetAuthorDetailResponse response = authorService.getAuthorDetails(1L);
 
         //then
         assertEquals(author.getEmail(), response.getEmail());
@@ -165,7 +165,7 @@ class AuthorServiceTest {
 
     @Test
     @DisplayName("전달받은 Id의 저자가 존재하면, 삭제에 성공한다.")
-    void delete_whenExistsAuthor_thenSuccess() throws Exception {
+    void deleteAuthor_whenExistsAuthor_thenSuccess() throws Exception {
         //given
         Author author = Author.builder()
                 .id(1L)
@@ -176,7 +176,7 @@ class AuthorServiceTest {
         authorRepository.save(author);
 
         //when
-        authorService.delete(1L);
+        authorService.deleteAuthor(1L);
 
         //then
         assertThrows(AuthorException.class, () -> authorRepository.findByIdOrElseThrow(1L));

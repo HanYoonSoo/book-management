@@ -36,7 +36,7 @@ class BookControllerTest {
 
     @Test
     @DisplayName("도서 생성에 성공하면, 201 상태코드를 전달 받는다.")
-    void create_whenSuccess_thenReturnStatus201() throws Exception {
+    void createBook_whenSuccess_thenReturnStatus201() throws Exception {
         //given
         CreateBookRequest request = CreateBookRequest.builder()
                 .title("테스트 타이틀")
@@ -50,7 +50,7 @@ class BookControllerTest {
 
         doNothing()
                 .when(bookService)
-                .create(any());
+                .createBook(any());
 
         //when & then
         mockMvc.perform(post("/books")
@@ -62,7 +62,7 @@ class BookControllerTest {
 
     @Test
     @DisplayName("필수값이 전달되지 않았다면, 400 상태코드를 전달 받는다.")
-    void create_whenBlankRequiredFields_thenReturnStatus400() throws Exception {
+    void createBook_whenBlankRequiredFields_thenReturnStatus400() throws Exception {
         //given
         CreateBookRequest request = CreateBookRequest.builder().build();
 
@@ -70,7 +70,7 @@ class BookControllerTest {
 
         doNothing()
                 .when(bookService)
-                .create(any());
+                .createBook(any());
 
         //when & then
         mockMvc.perform(post("/books")
@@ -82,7 +82,7 @@ class BookControllerTest {
 
     @Test
     @DisplayName("isbn 형식이 잘못되었다면, 400 상태코드를 전달 받는다.")
-    void create_whenNotValidIsbn_thenReturnStatus400() throws Exception {
+    void createBook_whenNotValidIsbn_thenReturnStatus400() throws Exception {
         //given
         CreateBookRequest request = CreateBookRequest.builder()
                 .title("테스트 타이틀")
@@ -96,7 +96,7 @@ class BookControllerTest {
 
         doNothing()
                 .when(bookService)
-                .create(any());
+                .createBook(any());
 
         //when & then
         mockMvc.perform(post("/books")
@@ -108,7 +108,7 @@ class BookControllerTest {
 
     @Test
     @DisplayName("도서 수정에 성공하면, 200 상태코드를 전달 받는다.")
-    void update_whenSuccess_thenReturnStatus201() throws Exception {
+    void updateBook_whenSuccess_thenReturnStatus201() throws Exception {
         //given
         UpdateBookRequest request = UpdateBookRequest.builder()
                 .title("테스트 수정 타이틀")
@@ -121,7 +121,7 @@ class BookControllerTest {
 
         doNothing()
                 .when(bookService)
-                .update(any(), any());
+                .updateBook(any(), any());
 
         //when & then
         mockMvc.perform(patch("/books/1")
@@ -133,7 +133,7 @@ class BookControllerTest {
 
     @Test
     @DisplayName("isbn 형식이 잘못되었다면, 400 상태코드를 전달 받는다.")
-    void update_whenNotValidIsbn_thenReturnStatus400() throws Exception {
+    void updateBook_whenNotValidIsbn_thenReturnStatus400() throws Exception {
         //given
         UpdateBookRequest request = UpdateBookRequest.builder()
                 .title("테스트 수정 타이틀")
@@ -146,7 +146,7 @@ class BookControllerTest {
 
         doNothing()
                 .when(bookService)
-                .update(any(), any());
+                .updateBook(any(), any());
 
         //when & then
         mockMvc.perform(patch("/books/1")
@@ -158,11 +158,11 @@ class BookControllerTest {
 
     @Test
     @DisplayName("도서 삭제에 성공하면, 200 상태코드를 전달 받는다.")
-    void delete_whenSuccess_thenReturnStatus200() throws Exception {
+    void deleteBook_whenSuccess_thenReturnStatus200() throws Exception {
         //given
         doNothing()
                 .when(bookService)
-                .delete(any());
+                .deleteBook(any());
 
         //when & then
         mockMvc.perform(delete("/books/1")
@@ -173,9 +173,9 @@ class BookControllerTest {
 
     @Test
     @DisplayName("도서 상세조회에 성공하면, 200 상태코드를 전달 받는다.")
-    void readBookDetail_whenSuccess_thenReturnStatus200() throws Exception {
+    void getBookDetails_whenSuccess_thenReturnStatus200() throws Exception {
         //given
-        given(bookService.readBookDetail(1L))
+        given(bookService.getBookDetails(1L))
                 .willReturn(any(GetBookDetailResponse.class));
 
         //when & then

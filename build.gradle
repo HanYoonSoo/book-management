@@ -3,6 +3,7 @@ plugins {
     id 'org.springframework.boot' version '3.4.3'
     id 'io.spring.dependency-management' version '1.1.7'
     id 'jacoco'
+    id 'application'
 }
 
 group = 'com.hanyoonsoo'
@@ -74,4 +75,14 @@ jacoco {
 
 clean {
     delete file('src/main/generated')
+}
+
+application {
+    mainClassName = 'com.example.BookManagementApplication' // Main 클래스의 경로 및 클래스명
+}
+
+jar {
+    manifest {
+        attributes 'Main-Class': 'com.example.BookManagementApplication' // Manifest에 Main-Class 속성 추가
+    }
 }

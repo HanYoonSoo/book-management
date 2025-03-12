@@ -21,42 +21,42 @@ public class AuthorControllerImpl implements AuthorController {
 
     @Override
     @PostMapping("/authors")
-    public ApiResponse<Void> create(@Valid @RequestBody CreateAuthorRequest request) {
-        authorService.create(request);
+    public ApiResponse<Void> createAuthor(@Valid @RequestBody CreateAuthorRequest request) {
+        authorService.createAuthor(request);
 
         return ApiResponse.created(null);
     }
 
     @Override
     @PatchMapping("/authors/{authorId}")
-    public ApiResponse<Void> update(
+    public ApiResponse<Void> updateAuthor(
             @Valid @RequestBody UpdateAuthorRequest request, @PathVariable("authorId") Long authorId
     ) {
-        authorService.update(request, authorId);
+        authorService.updateAuthor(request, authorId);
 
         return ApiResponse.ok(null);
     }
 
     @Override
     @DeleteMapping("/authors/{authorId}")
-    public ApiResponse<Void> delete(@PathVariable("authorId") Long authorId) {
-        authorService.delete(authorId);
+    public ApiResponse<Void> deleteAuthor(@PathVariable("authorId") Long authorId) {
+        authorService.deleteAuthor(authorId);
 
         return ApiResponse.ok(null);
     }
 
     @Override
     @GetMapping("/authors")
-    public ApiResponse<List<GetAuthorResponse>> readAuthors() {
-        List<GetAuthorResponse> response = authorService.readAuthors();
+    public ApiResponse<List<GetAuthorResponse>> getAuthors() {
+        List<GetAuthorResponse> response = authorService.getAuthors();
 
         return ApiResponse.ok(response);
     }
 
     @Override
     @GetMapping("/authors/{authorId}")
-    public ApiResponse<GetAuthorDetailResponse> readAuthorDetail(@PathVariable Long authorId) {
-        GetAuthorDetailResponse response = authorService.readAuthorDetail(authorId);
+    public ApiResponse<GetAuthorDetailResponse> getAuthorDetails(@PathVariable("authorId") Long authorId) {
+        GetAuthorDetailResponse response = authorService.getAuthorDetails(authorId);
 
         return ApiResponse.ok(response);
     }

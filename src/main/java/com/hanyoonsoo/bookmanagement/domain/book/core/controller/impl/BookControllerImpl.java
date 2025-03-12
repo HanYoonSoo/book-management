@@ -21,45 +21,45 @@ public class BookControllerImpl implements BookController {
 
     @Override
     @PostMapping("/books")
-    public ApiResponse<Void> create(@Valid @RequestBody CreateBookRequest request) {
-        bookService.create(request);
+    public ApiResponse<Void> createBook(@Valid @RequestBody CreateBookRequest request) {
+        bookService.createBook(request);
 
         return ApiResponse.created(null);
     }
 
     @Override
     @PatchMapping("/books/{bookId}")
-    public ApiResponse<Void> update(
+    public ApiResponse<Void> updateBook(
             @Valid @RequestBody UpdateBookRequest request, @PathVariable("bookId") Long bookId
     ) {
-        bookService.update(request, bookId);
+        bookService.updateBook(request, bookId);
 
         return ApiResponse.ok(null);
     }
 
     @Override
     @DeleteMapping("/books/{bookId}")
-    public ApiResponse<Void> delete(@PathVariable("bookId") Long bookId) {
-        bookService.delete(bookId);
+    public ApiResponse<Void> deleteBook(@PathVariable("bookId") Long bookId) {
+        bookService.deleteBook(bookId);
 
         return ApiResponse.ok(null);
     }
 
     @Override
     @GetMapping("/books")
-    public ApiResponse<PageResponse<GetBookResponse>> readBooks(
+    public ApiResponse<PageResponse<GetBookResponse>> getBooks(
             GetBooksCondition condition,
             @RequestParam(value = "pageNo", required = false, defaultValue = "0") int pageNo)
     {
-        PageResponse<GetBookResponse> response = bookService.readBooks(condition, pageNo);
+        PageResponse<GetBookResponse> response = bookService.getBooksWithPagination(condition, pageNo);
 
         return ApiResponse.ok(response);
     }
 
     @Override
     @GetMapping("/books/{bookId}")
-    public ApiResponse<GetBookDetailResponse> readBookDetail(@PathVariable("bookId") Long bookId) {
-        GetBookDetailResponse response = bookService.readBookDetail(bookId);
+    public ApiResponse<GetBookDetailResponse> getBookDetails(@PathVariable("bookId") Long bookId) {
+        GetBookDetailResponse response = bookService.getBookDetails(bookId);
 
         return ApiResponse.ok(response);
     }
