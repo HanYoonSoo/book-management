@@ -35,7 +35,7 @@ public class BookServiceImpl implements BookService {
 
     @Override
     @Transactional
-    public void create(CreateBookRequest request) {
+    public void createBook(CreateBookRequest request) {
         Author author = authorService.validateExistsAuthor(request.getAuthorId());
         validateDuplicatedIsbn(request.getIsbn());
 
@@ -52,7 +52,7 @@ public class BookServiceImpl implements BookService {
 
     @Override
     @Transactional
-    public void update(UpdateBookRequest request, Long bookId) {
+    public void updateBook(UpdateBookRequest request, Long bookId) {
         Book book = validateExistsBook(bookId);
 
         String isbn = request.getIsbn();
@@ -72,7 +72,7 @@ public class BookServiceImpl implements BookService {
 
     @Override
     @Transactional
-    public void delete(Long bookId) {
+    public void deleteBook(Long bookId) {
         Book book = validateExistsBook(bookId);
 
         bookRepository.delete(book);
@@ -80,7 +80,7 @@ public class BookServiceImpl implements BookService {
 
     @Override
     @Transactional(readOnly = true)
-    public PageResponse<GetBookResponse> readBooks(GetBooksCondition condition, int pageNo) {
+    public PageResponse<GetBookResponse> getBooksWithPagination(GetBooksCondition condition, int pageNo) {
         pageNo = Math.max(pageNo, 0);
 
         Pageable pageable = PageRequest.of(pageNo, booksPageSize);
@@ -92,7 +92,7 @@ public class BookServiceImpl implements BookService {
 
     @Override
     @Transactional(readOnly = true)
-    public GetBookDetailResponse readBookDetail(Long bookId) {
+    public GetBookDetailResponse getBookDetails(Long bookId) {
         Book book = validateExistsBook(bookId);
 
         return GetBookDetailResponse.from(book);
