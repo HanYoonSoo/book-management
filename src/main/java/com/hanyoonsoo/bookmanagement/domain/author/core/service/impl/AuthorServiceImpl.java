@@ -51,8 +51,8 @@ public class AuthorServiceImpl implements AuthorService {
     /**
      * 저자, 도서 삭제 과정에서 Soft Delete를 활용.
      * 저자 관련 도서 정보 우선 삭제 후, 저자 삭제
-     * 저자 삭제 시 email값: deleted_(UUID)
-     * 도서 삭제 시 isbn값: deleted_(UUID)
+     * 저자 삭제 시 email값: deleted_(UUID)_email
+     * 도서 삭제 시 isbn값: deleted_(UUID)_isbn
      */
     @Override
     @Transactional

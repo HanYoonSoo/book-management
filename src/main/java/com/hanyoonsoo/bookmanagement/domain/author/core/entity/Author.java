@@ -14,7 +14,13 @@ import java.util.List;
 @Entity
 @Builder
 @Getter
-@SQLDelete(sql = "UPDATE author SET deleted_at = CURRENT_TIMESTAMP, email = CONCAT('deleted_', UUID()) WHERE id = ?")
+@SQLDelete(sql =
+    """
+        UPDATE author 
+        SET deleted_at = CURRENT_TIMESTAMP, email = CONCAT('deleted_', random_uuid(), '_', email) 
+        WHERE id = ?
+    """
+)
 @SQLRestriction("deleted_at is null")
 @Table(name = "author")
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
