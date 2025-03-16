@@ -78,11 +78,11 @@ clean {
 }
 
 application {
-    mainClassName = 'com.example.BookManagementApplication' // Main 클래스의 경로 및 클래스명
+    mainClassName = 'com.hanyoonsoo.bookmanagement.BookManagementApplication' // Main 클래스의 경로 및 클래스명
 }
 
 jar {
     manifest {
-        attributes 'Main-Class': 'com.example.BookManagementApplication' // Manifest에 Main-Class 속성 추가
+        attributes 'Main-Class': 'com.hanyoonsoo.bookmanagement.BookManagementApplication' // Manifest에 Main-Class 속성 추가
     }
 }
