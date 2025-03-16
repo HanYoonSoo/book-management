@@ -3,7 +3,14 @@
 ## 저자 & 도서 삭제 관련
 저자 삭제 시 Soft Delete로 삭제됩니다.<br> 
 해당 저자의 도서 또한 Soft Delete로 DB에서 관리됩니다.<br>
-삭제 시 저자 이메일, 도서 isbn은 UUID로 초기화 됩니다.
+삭제 시 저자 email: deleted\_(UUID)\_email으로 초기화 됩니다.<br>
+삭제 시 도서 isbn: deleted\_(UUID)\_isbn으로 초기화 됩니다.<br>
+
+설계 이유:
+1. Soft Delete -> 저자, 도서 삭제 시 데이터 보존.
+2. 삭제 초기화 형식 지정 -> 삭제 된 저자 email, 도서 isbn의 재생성 가능.
+3. UUID 사용 -> UUID 미사용 시 한번 삭제 된 데이터와 동일한 데이터 삭제 시 UNIQUE 충돌
+   - 예) abc@example.com 이메일을 가진 Author를 2번 삭제하는 경우(deleted_abc@example.com)
 
 ## 설치 및 실행 방법
 윈도우 작업 시 Git Bash를 사용해서 작업해주세요. UNIX 기반 운영체제의 경우 Terminal를 사용해서 작업해주세요.
